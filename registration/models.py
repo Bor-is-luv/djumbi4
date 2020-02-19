@@ -9,3 +9,4 @@ class User(models.Model):
     email = models.EmailField()
     password = models.CharField(max_length=30)
     avatar = models.ImageField()
+    reg_date = models.DateField(auto_now_add=True)
