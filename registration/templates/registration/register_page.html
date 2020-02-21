@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title> Registration </title>
 </head>
 <body>
-<div><a href=""> REGISTER</a></div>
-<div><a href=""> 4</a></div>
+<div><a href="{% url 'login_page' %}"> Login </a></div>
 <form id="add_form" method="post">
     {%  csrf_token %}
     {{ form }}

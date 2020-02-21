@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Авторизация</title>
 </head>
 <body>
-<div><a href=""> Авторизация</a></div>
-<div><a href=""> Dva</a></div>
+<div><a href="{% url 'register_page' %}"> Регистрация </a></div>
 <form id="add_form" method="post">
     {%  csrf_token %}
     {{ form }}
