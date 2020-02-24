@@ -14,7 +14,7 @@ def index(request):
 class UserLoginView(LoginView):
     template_name = 'registration/login.html'
     form_class = AuthUserForm
-    success_url = reverse_lazy('logout_page')
+    success_url = reverse_lazy('create_group_page')
 
     def get_success_url(self):
         return self.success_url
@@ -33,7 +33,7 @@ class UserRegisterView(CreateView):
     template_name = 'registration/register_page.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('login_page')
-    success_msg = 'Пользователь успешно создан'
+    # success_msg = 'Пользователь успешно создан'
 
 
 class UserLogoutView(LogoutView):
