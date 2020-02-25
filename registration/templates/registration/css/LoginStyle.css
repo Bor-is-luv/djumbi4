@@ -103,11 +103,3 @@ a:link {
     color: #ffffff;
 }
 
-
-.login-container {
-    position: absolute;
-    top: 40%;
-    left: 40%;
-    margin-left: auto;
-    margin-right: auto;
-}
