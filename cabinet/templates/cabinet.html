@@ -1,18 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Cabinet</title>
-</head>
-<body>
-<div><a href="{% url 'create_group_page' %}"> create group </a></div>
-<div><a href="{% url 'create_course_page' %}"> create course </a></div>
-{#{% if status == True %}#}
-{#    {% for group in groups %}#}
-{#        <div>group.name</div>#}
-{#    {% endfor %}#}
-{#    {% else %}#}
-{#    <div> Нет доступа </div>#}
-{#{% endif %}#}
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Your account</title>
+  </head>
+  <body>
+    <header></header>
+
+    <!--NAVBAR-->
+    <nav class="navbar navbar-light bg-light justify-content-start flex-wrap">
+      <img src="images/logo.svg" alt="logo" class="logo-pic mr-3" />
+      <!-- Размер на маленьких экранах -->
+      <a class="navbar-brand" href="#" style="color: #0f45c7; font-size: 25px;"
+        >Личный кабинет преподавателя</a
+      >
+      <button class="btn ml-auto quit-button">
+        Выход
+      </button>
+    </nav>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <!--JUMBOTRON-->
+    <div class="jumbotron jumbotron-fluid pt-4 pb-4">
+      <div class="container">
+        <h1 class="display-4">Добро пожаловать,</h1>
+        <p class="lead">
+          %Имя Фамилия%
+        </p>
+      </div>
+    </div>
+    <!--INFO-->
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-7 col-lg-7 col-xl-5">
+          <div class="card mb-4 shadow">
+            <h5 class="card-header">Информация</h5>
+            <div class="card-body">
+              <h5 class="card-title">ФИО</h5>
+              <p class="card-text">
+                %Фамилия Имя Отчество%
+              </p>
+              <h5 class="card-title">Телефон</h5>
+              <p class="card-text">
+                %Телефон% А зачем здесь телефон?
+              </p>
+              <h5 class="card-title">О себе</h5>
+              <p class="card-text">
+                %О себе% А зачем здесь о себе?
+              </p>
+              <a href="#" class="btn btn-primary text-right">Редактировать</a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-xs-6 col-md-5 col-lg-5 col-xl-7"
+          style="max-height: 460px;"
+        >
+          <!-- Вариант поместить информацию о курсах
+               в INFO, а на их место разместить кнопки
+               из MAKE GROUP AND CHAT BUTTONS
+          -->
+          <!--COURSES-->
+          <div
+            class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start"
+          >
+            <div class="card mb-4 shadow width-for-course-card">
+              <div class="card-body">
+                <h5 class="card-title">Курс1</h5>
+                <p class="card-text">%Название курса%</p>
+                <h5 class="card-title">Группа</h5>
+                <p class="card-text">%Название группы%</p>
+              </div>
+            </div>
+            <div class="card mb-4 shadow width-for-course-card">
+              <div class="card-body">
+                <h5 class="card-title">Курс2</h5>
+                <p class="card-text">%Название курса%</p>
+                <h5 class="card-title">Группа</h5>
+                <p class="card-text">%Название группы%</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- MAKE GROUP -->
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
+          <div class="card mb-4 shadow w-100">
+            <h5 class="card-header">Создание группы</h5>
+            <div class="card-body">
+              <!-- Выбор будет здесь или на странице курса? -->
+              <!-- Где вообще будем брать курсы? -->
+              <p class="card-text">Создать новую учебную группу для курса</p>
+              <div class="d-flex">
+                <a href="#" class="btn btn-primary">Создать группу</a>
+              </div>
+            </div>
+          </div>
+        </div>
+          <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
+            <div class="card mb-4 shadow w-100">
+              <h5 class="card-header">Чат</h5>
+              <div class="card-body">
+                <p class="card-text ">Фукнкциональные кнопки</p>
+                <div class="d-flex">
+                  <a href="#" class="btn btn-primary mr-3">Общий чат</a>
+                  <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+  </body>
 </html>
