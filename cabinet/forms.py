@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Group, Course
+from .models import Group, Course, Teacher
 
 
 class CreateGroup(ModelForm):
@@ -18,6 +18,17 @@ class CreateCourse(ModelForm):
     class Meta:
         model = Course
         fields = ['name', 'hours']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class CreateTeacher(ModelForm):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

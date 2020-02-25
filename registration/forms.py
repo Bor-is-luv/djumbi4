@@ -17,7 +17,7 @@ class AuthUserForm(AuthenticationForm, forms.ModelForm):
 class RegisterUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ('username', 'password', 'email')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
