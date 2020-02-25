@@ -21,7 +21,8 @@ class CreateGroupView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.teacher = self.request.user.Teacher
+        teacher = Teacher.objects.get(user=self.request.user)
+        self.object.teacher = teacher
         self.object.save()
         return super().form_valid(form)
 
