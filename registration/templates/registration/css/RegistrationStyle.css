@@ -1,0 +1,110 @@
+body {
+    color: #0f45c7;
+    background: #f8f9fa;
+}
+
+.card-body {
+    background: #ffffff;
+}
+
+.card-header {
+    background: #0f45c7;
+    color: #ffffff;
+}
+
+.btn {
+    background: #0f45c7;
+    color: #ffffff;
+}
+
+a:link {
+    color: #0f45c7;
+}
+
+.width-for-course-card {
+    width: 100%;
+}
+
+.logo-pic {
+    width: 20%;
+    height: 20%;
+
+}
+
+@media (min-width: 576px) {
+    .logo-pic {
+        width: 30%;
+        height: 30%;
+    
+    }
+
+    .quit-button {
+        background: #f8f9fa;
+        color: #0f45c7;
+        font-size: 13px;
+    }
+
+}
+
+@media (min-width: 768px) {
+    .logo-pic {
+        width: 30%;
+        height: 30%;
+    
+    }
+
+    .quit-button {
+        background: #f8f9fa;
+        color: #0f45c7;
+        font-size: 15px;
+    }
+    
+}
+
+@media (min-width: 992px) {
+    .width-for-course-card {
+        max-width: 300px;
+    }
+    
+    .logo-pic {
+        width: 25%;
+        height: 25%;
+    
+    }
+
+    .quit-button {
+        background: #f8f9fa;
+        color: #0f45c7;
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .width-for-course-card {
+        max-width: 300px;
+    }
+
+    .logo-pic {
+        width: 20%;
+        height: 20%;
+    
+    }
+
+    .quit-button {
+        background: #f8f9fa;
+        color: #0f45c7;
+        font-size: 23px;
+    }
+    
+}
+
+.jumbotron {
+    background: #0f45c7;
+    color: #ffffff;
+}
+
+.registration-form {
+    padding-right: 40%;
+    padding-left: 40%;
+}
+
