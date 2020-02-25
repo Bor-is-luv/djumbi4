@@ -20,7 +20,7 @@ class Course(models.Model):
 
     name = models.CharField(max_length=20)
     hours = models.IntegerField(blank=True, null=True, default=0)
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
 
 class Group(models.Model):
@@ -29,7 +29,7 @@ class Group(models.Model):
     course = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
 
     name = models.CharField(max_length=20)
-    time = models.DateField(blank=True, null=True)
+    time = models.CharField(max_length=20, blank=True, null=True)
     day = models.CharField(blank=True, null=True, max_length=12)
     active = models.BooleanField(default=False)
 

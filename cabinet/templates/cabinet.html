@@ -6,12 +6,13 @@
 </head>
 <body>
 <div><a href="{% url 'create_group_page' %}"> create group </a></div>
-{% if status == True %}
-    {% for group in groups %}
-        <div>group.name</div>
-    {% endfor %}
-    {% else %}
-    <div> Нет доступа </div>
-{% endif %}
+<div><a href="{% url 'create_course_page' %}"> create course </a></div>
+{#{% if status == True %}#}
+{#    {% for group in groups %}#}
+{#        <div>group.name</div>#}
+{#    {% endfor %}#}
+{#    {% else %}#}
+{#    <div> Нет доступа </div>#}
+{#{% endif %}#}
 </body>
 </html>
