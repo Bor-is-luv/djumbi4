@@ -8,9 +8,9 @@ from django.contrib.auth import authenticate, login
 
 
 class UserLoginView(LoginView):
-    template_name = 'registration/login.html'
+    template_name = 'registration/login_page.html'
     form_class = AuthUserForm
-    success_url = reverse_lazy('create_group_page')
+    success_url = reverse_lazy('cabinet_page')
 
     def get_success_url(self):
         return self.success_url

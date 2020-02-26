@@ -34,9 +34,12 @@
       <a class="navbar-brand" href="{% url 'create_lesson_page' %}" style="color: #0f45c7; font-size: 25px;"
         >Создать урок</a
       >
-      <button class="btn ml-auto quit-button">
-        Выход
-      </button>
+        <a class="navbar-brand" href="#" style="color: #0f45c7; font-size: 25px;"
+        >{{ request.user }} </a
+      >
+      <a class="navbar-brand" href="{% url 'logout_page' %}" style="color: #0f45c7; font-size: 25px;"
+        > Выход </a
+      >
     </nav>
     <script
       src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
