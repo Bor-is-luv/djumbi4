@@ -74,7 +74,6 @@ class Lesson(models.Model):
     homework_task = models.TextField(blank=True, null=True)
     homework_solution = models.FileField(blank=True, null=True)
 
-
     def __str__(self):
         return f'{self.group} {self.number}'
 
