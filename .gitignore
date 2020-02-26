@@ -1,5 +1,5 @@
 .idea/*
 db.sqlite3
-registration/__pycache__
 */__pycache__
 */*/__pycache__
+*/*/__pycache__/*
