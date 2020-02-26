@@ -7,7 +7,7 @@ from .forms import CreateGroup, CreateCourse, CreateTeacher
 
 def cabinet_view(request):
     context = {}
-    template = 'cabinet.html'
+    template = 'cabinet/cabinet.html'
 
     # context['groups'] = Group.objects.get(teacher=request.user.id)
     return render(request, template, context)
