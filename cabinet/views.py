@@ -8,8 +8,14 @@ from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
 def cabinet_view(request):
     context = {}
     template = 'cabinet/cabinet.html'
-
-    # context['groups'] = Group.objects.get(teacher=request.user.id)
+    teacher = Teacher.objects.get(user=request.user)
+    print(teacher)
+    courses = Course.objects.filter(teachers=teacher)
+    groups = Group.objects.filter(teacher=teacher)
+    lessons = Lesson.objects.filter(teacher=teacher)
+    context['groups'] = groups
+    context['lessons'] = lessons
+    context['courses'] = courses
     return render(request, template, context)
 
 
@@ -18,6 +24,13 @@ class CreateGroupView(CreateView):
     template_name = 'cabinet/create_group.html'
     form_class = CreateGroup
     success_url = reverse_lazy('cabinet_page')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        teacher = Teacher.objects.get(user=self.request.user)
+        self.object.teacher = teacher
+        self.object.save()
+        return super().form_valid(form)
 
 
 class CreateCourseView(CreateView):

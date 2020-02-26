@@ -5,6 +5,13 @@ from django.contrib.auth.models import User
 class Pupil(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
+    def __str__(self):
+        return f'{self.user.username}'
+
+    class Meta:
+        verbose_name = 'Ученик'
+        verbose_name_plural = 'Ученики'
+
 
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
@@ -12,6 +19,13 @@ class Teacher(models.Model):
     image = models.ImageField(blank=True, null=True)
     info = models.TextField(blank=True, null=True)
     phone_number = models.CharField(blank=True, null=True, max_length=15)
+
+    def __str__(self):
+        return f'{self.name.username }'
+
+    class Meta:
+        verbose_name = 'Учитель'
+        verbose_name_plural = 'Учителя'
 
 
 class Course(models.Model):
@@ -41,6 +55,13 @@ class Group(models.Model):
     day = models.CharField(blank=True, null=True, max_length=12)
     active = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'{self.name} {self.course} {self.time} {self.day}'
+
+    class Meta:
+        verbose_name = 'Курс'
+        verbose_name_plural = 'Курсы'
+
 
 class Lesson(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
@@ -52,3 +73,11 @@ class Lesson(models.Model):
     name = models.CharField(max_length=30)
     homework_task = models.TextField(blank=True, null=True)
     homework_solution = models.FileField(blank=True, null=True)
+
+
+    def __str__(self):
+        return f'{self.group} {self.number}'
+
+    class Meta:
+        verbose_name = 'Урок'
+        verbose_name_plural = 'Уроки'
