@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from .forms import CreateGroup, CreateCourse, CreateTeacher
+from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
 
 
 def cabinet_view(request):
@@ -15,37 +15,30 @@ def cabinet_view(request):
 
 class CreateGroupView(CreateView):
     model = Group
-    template_name = 'create_group.html'
+    template_name = 'cabinet/create_group.html'
     form_class = CreateGroup
     success_url = reverse_lazy('cabinet_page')
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        teacher = Teacher.objects.get(user=self.request.user)
-        self.object.teacher = teacher
-        self.object.save()
-        return super().form_valid(form)
 
 
 class CreateCourseView(CreateView):
     model = Course
-    template_name = 'create_course.html'
+    template_name = 'cabinet/create_course.html'
     form_class = CreateCourse
     success_url = reverse_lazy('cabinet_page')
-
-    def form_valid(self, form):
-        self.object = form.save()
-        self.object.save()
-        return super().form_valid(form)
 
 
 class CreateTeacherView(CreateView):
     model = Teacher
-    template_name = 'create_teacher.html'
+    template_name = 'cabinet/create_teacher.html'
     form_class = CreateTeacher
     success_url = reverse_lazy('cabinet_page')
 
-    def form_valid(self, form):
-        self.object = form.save()
-        self.object.save()
-        return super().form_valid(form)
+
+class CreateLessonView(CreateView):
+    model = Teacher
+    template_name = 'cabinet/create_lesson.html'
+    form_class = CreateLesson
+    success_url = reverse_lazy('cabinet_page')
+
+
+

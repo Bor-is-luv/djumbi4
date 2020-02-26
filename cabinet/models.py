@@ -23,6 +23,13 @@ class Course(models.Model):
     active = models.BooleanField(default=True)
     info = models.TextField(blank=True, null=True, max_length=400)
 
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Курс'
+        verbose_name_plural = 'Курсы'
+
 
 class Group(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Учитель', blank=True, null=True)
