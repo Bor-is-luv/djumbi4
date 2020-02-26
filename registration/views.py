@@ -7,10 +7,6 @@ from .forms import AuthUserForm, RegisterUserForm
 from django.contrib.auth import authenticate, login
 
 
-def index(request):
-    return render(request, 'registration/index.html')
-
-
 class UserLoginView(LoginView):
     template_name = 'registration/login.html'
     form_class = AuthUserForm
@@ -30,11 +26,11 @@ class UserLoginView(LoginView):
 
 class UserRegisterView(CreateView):
     model = User
-    template_name = 'registration/register_page.html'
+    template_name = 'registration/registration_page.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('login_page')
     # success_msg = 'Пользователь успешно создан'
 
 
 class UserLogoutView(LogoutView):
-    next_page = 'register_page'
+    next_page = 'registration_page'
