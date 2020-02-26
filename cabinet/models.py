@@ -18,9 +18,10 @@ class Course(models.Model):
     pupils = models.ManyToManyField(Pupil)
     teachers = models.ManyToManyField(Teacher)
 
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     hours = models.IntegerField(blank=True, null=True, default=0)
     active = models.BooleanField(default=True)
+    info = models.TextField(blank=True, null=True, max_length=400)
 
 
 class Group(models.Model):
