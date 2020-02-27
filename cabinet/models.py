@@ -21,7 +21,7 @@ class Teacher(models.Model):
     phone_number = models.CharField(blank=True, null=True, max_length=15)
 
     def __str__(self):
-        return f'{self.name.username }'
+        return f'{self.user.username }'
 
     class Meta:
         verbose_name = 'Учитель'
@@ -29,8 +29,8 @@ class Teacher(models.Model):
 
 
 class Course(models.Model):
-    pupils = models.ManyToManyField(Pupil)
-    teachers = models.ManyToManyField(Teacher)
+    pupils = models.ManyToManyField(Pupil, blank=True, null=True)
+    teachers = models.ManyToManyField(Teacher, blank=True, null=True)
 
     name = models.CharField(max_length=50)
     hours = models.IntegerField(blank=True, null=True, default=0)
@@ -59,8 +59,8 @@ class Group(models.Model):
         return f'{self.name} {self.course} {self.time} {self.day}'
 
     class Meta:
-        verbose_name = 'Курс'
-        verbose_name_plural = 'Курсы'
+        verbose_name = 'Группа'
+        verbose_name_plural = 'Группы'
 
 
 class Lesson(models.Model):
