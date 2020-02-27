@@ -5,7 +5,15 @@ from django.contrib.auth.models import User
 from django.views.generic import CreateView
 from .forms import AuthUserForm, RegisterUserForm
 from django.contrib.auth import authenticate, login
+from .lab2 import uncipher_str
 
+def confirm(request, key):
+    username = uncipher_str(key)
+    user = User.objects.get(username=username)
+    user.is_active = True
+    user.save()
+    template = 'registration/confirm_page.html'
+    return render(request, template)
 
 class UserLoginView(LoginView):
     template_name = 'registration/login_page.html'
