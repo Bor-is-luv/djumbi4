@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 
+from django.core.mail import send_mail
 
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
     class Meta:
@@ -29,6 +30,14 @@ class RegisterUserForm(forms.ModelForm):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
         user.email = self.cleaned_data["email"]
+        user.is_active = False
+        send_mail(
+            'Subject here',
+            'Here is the message.',
+            'ADD YOUR GMAIL ADDRESS',
+            [f'{user.email}'],
+            fail_silently=False,
+        )
         if commit:
             user.save()
         return user
