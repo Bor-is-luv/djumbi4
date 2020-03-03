@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,7 +10,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
     <title>Your account</title>
   </head>
   <body>
@@ -17,7 +18,7 @@
 
     <!--NAVBAR-->
     <nav class="navbar navbar-light bg-light justify-content-start flex-wrap">
-      <img src="images/logo.svg" alt="logo" class="logo-pic mr-3" />
+      <img src="{% static 'logo.svg' %}" alt="logo" class="logo-pic mr-3" />
       <!-- Размер на маленьких экранах -->
       <a class="navbar-brand" href="#" style="color: #0f45c7; font-size: 25px;"
         >Личный кабинет преподавателя</a
