@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'djumbi4.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'djambi4_db',
+        'USER': 'djambi4_db',
+        'PASSWORD': 'djambi4_db',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -121,8 +125,8 @@ LOGIN_URL = 'login_page'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'ENTER YOUR GMAIL'
-EMAIL_HOST_PASSWORD = 'ENTER YOUR PASSWORD'
+EMAIL_HOST_USER = 'zverkii5@gmail.com'
+EMAIL_HOST_PASSWORD = 'b0p1s2000'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False

@@ -38,7 +38,7 @@ class RegisterUserForm(forms.ModelForm):
         send_mail(
             'Subject here',
             message,
-            'ENTER YOU GMAIL',
+            'zverkii5@gmail.com',
             [f'{user.email}'],
             fail_silently=False,
         )
