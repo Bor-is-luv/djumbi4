@@ -128,7 +128,6 @@ def uncipher_str(str_symbols, closed_key=closed_key, equivalent=equivalent):
             cipher_symbols_codes.append(int(s))
             s = ''
             cnt = 0
-    print(cipher_symbols_codes, 'aaa')
     new_symbols_codes = []
     new_string = ''
     for number in cipher_symbols_codes:

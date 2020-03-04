@@ -33,7 +33,7 @@ class RegisterUserForm(forms.ModelForm):
         user.email = self.cleaned_data["email"]
         username = self.cleaned_data["username"]
         cipher_username = cipher(username)
-        message = f'http://84.201.155.14:8000/confirm/{cipher_username}'
+        message = f'http://84.201.155.14/confirm/{cipher_username}'
         user.is_active = False
         send_mail(
             'Subject here',
