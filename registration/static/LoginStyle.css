@@ -103,8 +103,11 @@ a:link {
     color: #ffffff;
 }
 
-.login-form {
-    padding-right: 40%;
-    padding-left: 40%;
+.login-container {
+    padding-top: 10%;
+}
 
+.login-form {
+    padding-left: 40%;
+    padding-right: 40%;
 }

@@ -103,8 +103,12 @@ a:link {
     color: #ffffff;
 }
 
+.registration-container {
+    padding-top: 7%;
+}
+
 .registration-form {
-    padding-right: 40%;
     padding-left: 40%;
+    padding-right: 40%;
 }
 
