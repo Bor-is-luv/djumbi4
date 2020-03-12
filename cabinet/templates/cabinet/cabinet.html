@@ -25,12 +25,6 @@
       >
       <a
         class="navbar-brand"
-        href="{% url 'create_group_page' %}"
-        style="color: #0f45c7; font-size: 25px;"
-        >Создать группу</a
-      >
-      <a
-        class="navbar-brand"
         href="{% url 'create_course_page' %}"
         style="color: #0f45c7; font-size: 25px;"
         >Создать курс</a
@@ -91,6 +85,7 @@
             <div class="card-body">
               <h5 class="card-title">ФИО</h5>
               <p class="card-text">
+                 {{user}} 
                 %Фамилия Имя Отчество%
               </p>
               <h5 class="card-title">Телефон</h5>
@@ -117,22 +112,20 @@
           <div
             class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start"
           >
+          {% for course in courses %}
             <div class="card mb-4 shadow width-for-course-card">
               <div class="card-body">
-                <h5 class="card-title">Курс1</h5>
-                <p class="card-text">%Название курса%</p>
+                <h5 class="card-title">Курс</h5>
+                <p class="card-text">{{course}}</p>
                 <h5 class="card-title">Группа</h5>
-                <p class="card-text">%Название группы%</p>
+                <p class="card-text d-flex ">
+                  {% for group in groups %}
+                    {{group}}
+                  {% endfor %}
+                </p>
               </div>
             </div>
-            <div class="card mb-4 shadow width-for-course-card">
-              <div class="card-body">
-                <h5 class="card-title">Курс2</h5>
-                <p class="card-text">%Название курса%</p>
-                <h5 class="card-title">Группа</h5>
-                <p class="card-text">%Название группы%</p>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </div>
@@ -140,6 +133,8 @@
     <!-- MAKE GROUP -->
     <div class="container">
       <div class="row">
+        <!-- ДОБАВЛЕНИЕ КНОПКИ ГРУППЫ ПРИ ПРОФИЛЕ УЧИТЕЛЯ -->
+        {% if user_type == 'teacher' %}
         <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
           <div class="card mb-4 shadow w-100">
             <h5 class="card-header">Создание группы</h5>
@@ -148,11 +143,12 @@
               <!-- Где вообще будем брать курсы? -->
               <p class="card-text">Создать новую учебную группу для курса</p>
               <div class="d-flex">
-                <a href="#" class="btn btn-primary">Создать группу</a>
+                <a href="{% url 'create_group_page' %}" class="btn btn-primary">Создать группу</a>
               </div>
             </div>
           </div>
         </div>
+        {% endif %}
         <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
           <div class="card mb-4 shadow w-100">
             <h5 class="card-header">Чат</h5>
