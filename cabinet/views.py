@@ -25,6 +25,7 @@ def cabinet_view(request):
             context['lessons'] = Lesson.objects.filter(teacher=teacher)
             context['user_type'] = 'teacher'
         except:
+            context['user_type'] = 'admin'
             return render(request, template, context)
     return render(request, template, context)
 
