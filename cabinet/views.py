@@ -67,6 +67,13 @@ class CreateTeacherView(CreateView, LoginRequiredMixin):
     success_url = reverse_lazy('cabinet_page')
 
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        pupil = Pupil.objects.get(user=self.object.user)
+        pupil.delete()
+        return super().form_valid(form)
+
+
 class CreateLessonView(CreateView, LoginRequiredMixin):
     model = Teacher
     template_name = 'cabinet/create_lesson.html'
