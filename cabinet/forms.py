@@ -1,4 +1,4 @@
-from django.forms import ModelForm, ModelChoiceField
+from django.forms import ModelForm
 
 from .models import Group, Course, Teacher, Lesson
 
