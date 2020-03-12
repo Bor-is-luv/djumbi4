@@ -10,14 +10,22 @@ from django.contrib.auth.decorators import login_required
 def cabinet_view(request):
     context = {}
     template = 'cabinet/cabinet.html'
-    # teacher = Teacher.objects.get(user=request.user)
-    # print(teacher)
-    # courses = Course.objects.filter(teachers=teacher)
-    # groups = Group.objects.filter(teacher=teacher)
-    # lessons = Lesson.objects.filter(teacher=teacher)
-    # context['groups'] = groups
-    # context['lessons'] = lessons
-    # context['courses'] = courses
+    user = request.user
+    try:
+        pupil = Pupil.objects.get(user=user)
+        context['courses'] = Course.objects.filter(pupils=pupil)
+        context['groups'] = Group.objects.filter(pupils=pupil)
+        context['lessons'] = Lesson.objects.filter(pupils=pupil)
+        context['user_type'] = 'pupil'
+    except:
+        try:
+            teacher = Teacher.objects.get(user=user)
+            context['courses'] = Course.objects.filter(teachers=teacher)
+            context['groups'] = Group.objects.filter(teacher=teacher)
+            context['lessons'] = Lesson.objects.filter(teacher=teacher)
+            context['user_type'] = 'teacher'
+        except:
+            return render(request, template, context)
     return render(request, template, context)
 
 
@@ -33,6 +41,11 @@ class CreateGroupView(CreateView, LoginRequiredMixin):
         self.object.teacher = teacher
         self.object.save()
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(CreateGroupView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class CreateCourseView(CreateView, LoginRequiredMixin):
@@ -54,6 +67,13 @@ class CreateLessonView(CreateView, LoginRequiredMixin):
     template_name = 'cabinet/create_lesson.html'
     form_class = CreateLesson
     success_url = reverse_lazy('cabinet_page')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        teacher = Teacher.objects.get(user=self.request.user)
+        self.object.teacher = teacher
+        self.object.save()
+        return super().form_valid(form)
 
 
 
