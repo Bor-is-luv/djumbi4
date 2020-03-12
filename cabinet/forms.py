@@ -13,9 +13,7 @@ class CreateGroup(ModelForm):
         if 'user' in kwargs and kwargs['user'] is not None:
             user = kwargs.pop('user')
             teacher = Teacher.objects.filter(user=user).first()
-            print(teacher)
             qs_course = Course.objects.filter(teachers=teacher)
-            print(qs_course)
 
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = qs_course
@@ -52,7 +50,13 @@ class CreateLesson(ModelForm):
         fields = ['group', 'materials', 'number', 'name']
 
     def __init__(self, *args, **kwargs):
+        qs_groups = Group.objects.all()
+        if 'user' in kwargs and kwargs['user'] is not None:
+            user = kwargs.pop('user')
+            teacher = Teacher.objects.filter(user=user).first()
+            qs_groups = Group.objects.filter(teacher=teacher)
+
         super().__init__(*args, **kwargs)
-      #СДЕЛАТЬ ЗДЕСЬ ТАК ЖЕ КАК И В ГРУППАХ
+        self.fields['group'].queryset = qs_groups
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
