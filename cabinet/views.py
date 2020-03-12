@@ -11,8 +11,10 @@ def cabinet_view(request):
     context = {}
     template = 'cabinet/cabinet.html'
     user = request.user
+    context['user'] = ""
     try:
         pupil = Pupil.objects.get(user=user)
+        context['user'] = pupil.user.username
         context['courses'] = Course.objects.filter(pupils=pupil)
         context['groups'] = Group.objects.filter(pupils=pupil)
         context['lessons'] = Lesson.objects.filter(pupils=pupil)
@@ -20,6 +22,7 @@ def cabinet_view(request):
     except:
         try:
             teacher = Teacher.objects.get(user=user)
+            context['user'] = teacher.user.username
             context['courses'] = Course.objects.filter(teachers=teacher)
             context['groups'] = Group.objects.filter(teacher=teacher)
             context['lessons'] = Lesson.objects.filter(teacher=teacher)

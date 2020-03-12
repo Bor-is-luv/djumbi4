@@ -10,7 +10,6 @@ class CreateGroup(ModelForm):
 
     def __init__(self, *args, **kwargs):
         qs_course = Course.objects.all()
-        print(kwargs)
         if 'user' in kwargs and kwargs['user'] is not None:
             user = kwargs.pop('user')
             teacher = Teacher.objects.filter(user=user).first()
