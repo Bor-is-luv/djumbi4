@@ -57,3 +57,14 @@ class CreateLesson(ModelForm):
       #СДЕЛАТЬ ЗДЕСЬ ТАК ЖЕ КАК И В ГРУППАХ
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class DetailCourse(ModelForm):
+    class Meta:
+        model = Course
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
+from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson, DetailCourse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
@@ -75,6 +75,15 @@ class CreateLessonView(CreateView, LoginRequiredMixin):
         self.object.teacher = teacher
         self.object.save()
         return super().form_valid(form)
+
+
+class DetailCourseView(CreateView, LoginRequiredMixin):
+    model = Course
+    template_name = 'cabinet/detail_course.html'
+    form_class = DetailCourse
+    success_url = reverse_lazy('cabinet_page')
+    context_object_name = 'course'
+
 
 
 
