@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 
 class Pupil(models.Model):
@@ -43,10 +44,13 @@ class Course(models.Model):
     class Meta:
         verbose_name = 'Курс'
         verbose_name_plural = 'Курсы'
+        constraints = [
+            models.CheckConstraint(check=models.Q(hours__gte=0), name='hours_gte_0'),
+        ]
 
 
 class Group(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, verbose_name='Учитель', blank=True, null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, verbose_name='Учитель', blank=True, null=True)
     pupils = models.ManyToManyField(Pupil, verbose_name='ученики')
     course = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
 
