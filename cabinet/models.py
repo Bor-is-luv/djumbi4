@@ -49,7 +49,8 @@ class Course(models.Model):
 
 
 class Group(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, verbose_name='Учитель', blank=True, null=True)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING,
+                                verbose_name='Учитель', blank=True, null=True)
     pupils = models.ManyToManyField(Pupil, verbose_name='ученики')
     course = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
 

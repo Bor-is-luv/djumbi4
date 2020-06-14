@@ -11,6 +11,8 @@ from .models import *
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
+from django.core.exceptions import PermissionDenied
+
 
 def get_user_ctx(request):
     user = request.user
@@ -70,6 +72,12 @@ class CreateCourseView(CreateView, LoginRequiredMixin):
     form_class = CreateCourse
     success_url = reverse_lazy('cabinet_page')
 
+    def form_valid(self, form):
+        if self.request.user.is_staff:
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied
+
 
 class CreateTeacherView(CreateView, LoginRequiredMixin):
     model = Teacher
@@ -78,10 +86,18 @@ class CreateTeacherView(CreateView, LoginRequiredMixin):
     success_url = reverse_lazy('cabinet_page')
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        pupil = Pupil.objects.get(user=self.object.user)
-        pupil.delete()
-        return super().form_valid(form)
+        if self.request.user.is_staff:
+            self.object = form.save(commit=False)
+            user = self.object.user
+            pupil = Pupil.objects.get(user=user)
+            user.user_permissions.all()
+            user.user_permissions.remove('cabinet.delete_course', 'cabinet.add_course', 'cabinet.change_course',
+                                         'cabinet.delete_teacher', 'cabinet.add_teacher', 
+                                         'cabinet.change_teacher')
+            pupil.delete()
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied
 
 
 class CreateLessonView(CreateView, LoginRequiredMixin):
@@ -116,3 +132,41 @@ class DetailLessonView(DetailView, LoginRequiredMixin):
 class DetailGroupView(DetailView, LoginRequiredMixin):
     model = Group
     template_name = 'cabinet/detail_group.html'
+
+
+class DetailTeacherView(DetailView, LoginRequiredMixin):
+    model = Teacher
+    template_name = 'cabinet/detail_teacher.html'
+
+
+class DetailPupilView(DetailView, LoginRequiredMixin):
+    model = Pupil
+    template_name = 'cabinet/detail_pupil.html'
+
+
+class UpdateGroupView(DetailView, LoginRequiredMixin):
+    model = Group
+    template_name = 'cabinet/update_group.html'
+
+
+class UpdateCourseView(DetailView, LoginRequiredMixin):
+    model = Course
+    template_name = 'cabinet/update_course.html'
+
+class UpdateLessonView(DetailView, LoginRequiredMixin):
+    model = Lesson
+    template_name = 'cabinet/update_lesson.html'
+
+class UpdateTeacherView(DetailView, LoginRequiredMixin):
+    model = Teacher
+    template_name = 'cabinet/update_teacher.html'
+
+    #def form_valid(self, form):
+    #    if self.request.user.is_staff:
+    #        return super().form_valid(form)
+    #    else:
+    #        raise PermissionDenied
+
+class UpdatePupilView(DetailView, LoginRequiredMixin):
+    model = Pupil
+    template_name = 'cabinet/update_pupil.html'

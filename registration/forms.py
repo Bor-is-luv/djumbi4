@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'password')
+        fields = ('username', 'password', )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -25,7 +25,7 @@ class RegisterUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'password')
+        fields = ('email', 'username', 'password', 'first_name', 'last_name')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

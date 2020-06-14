@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.views.generic import CreateView
 
 from django.contrib.auth import authenticate, login
@@ -12,10 +12,21 @@ from .forms import AuthUserForm, RegisterUserForm
 from .lab2 import uncipher_str
 from cabinet.models import Pupil
 
+
 def confirm(request, key):
     username = uncipher_str(key)
     user = User.objects.get(username=username)
     user.is_active = True
+    user.user_permissions.clear()
+
+    view_lesson = Permission.objects.get(codename='view_lesson')
+    change_lesson = Permission.objects.get(codename='change_lesson')
+    view_group = Permission.objects.get(name='Can view Группа')
+    view_course = Permission.objects.get(codename='view_course')
+    view_teacher = Permission.objects.get(codename='view_teacher')
+    view_pupil = Permission.objects.get(codename='view_pupil')
+
+    user.user_permissions.add(view_lesson, change_lesson, view_group, view_course, view_teacher, view_pupil)
     user.save()
     try:
         pupil = Pupil.objects.get(user=user)
@@ -23,8 +34,10 @@ def confirm(request, key):
         pupil = Pupil()
         pupil.user = user
         pupil.save()
-        template = 'registration/confirm_page.html'
+        
+    template = 'registration/confirm_page.html'
     return render(request, template)
+
 
 class UserLoginView(LoginView):
     template_name = 'registration/login_page.html'
