@@ -1,17 +1,20 @@
 from django.shortcuts import render
-from .models import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 
-@login_required()
-def cabinet_view(request):
-    context = {}
-    template = 'cabinet/cabinet.html'
+from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
+from .models import *
+
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+
+
+def get_user_ctx(request):
     user = request.user
+    context = {}
     context['user'] = ""
     try:
         pupil = Pupil.objects.get(user=user)
@@ -20,7 +23,7 @@ def cabinet_view(request):
         context['groups'] = Group.objects.filter(pupils=pupil)
         context['lessons'] = Lesson.objects.filter(pupils=pupil)
         context['user_type'] = 'pupil'
-    except:
+    except (ObjectDoesNotExist, MultipleObjectsReturned):
         try:
             teacher = Teacher.objects.get(user=user)
             context['user'] = teacher.user.username
@@ -28,9 +31,17 @@ def cabinet_view(request):
             context['groups'] = Group.objects.filter(teacher=teacher)
             context['lessons'] = Lesson.objects.filter(teacher=teacher)
             context['user_type'] = 'teacher'
-        except:
+        except ObjectDoesNotExist:
             context['user_type'] = 'admin'
-            return render(request, template, context)
+
+    return context
+
+
+@login_required()
+def cabinet_view(request):
+    template = 'cabinet/cabinet.html'
+    context = get_user_ctx(request)
+
     return render(request, template, context)
 
 
@@ -66,7 +77,6 @@ class CreateTeacherView(CreateView, LoginRequiredMixin):
     form_class = CreateTeacher
     success_url = reverse_lazy('cabinet_page')
 
-
     def form_valid(self, form):
         self.object = form.save(commit=False)
         pupil = Pupil.objects.get(user=self.object.user)
@@ -98,5 +108,11 @@ class DetailCourseView(DetailView, LoginRequiredMixin):
     template_name = 'cabinet/detail_course.html'
 
 
+class DetailLessonView(DetailView, LoginRequiredMixin):
+    model = Lesson
+    template_name = 'cabinet/detail_lesson.html'
 
 
+class DetailGroupView(DetailView, LoginRequiredMixin):
+    model = Group
+    template_name = 'cabinet/detail_group.html'

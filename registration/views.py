@@ -3,9 +3,12 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.views.generic import CreateView
-from .forms import AuthUserForm, RegisterUserForm
+
 from django.contrib.auth import authenticate, login
 
+from django.core.exceptions import ObjectDoesNotExist
+
+from .forms import AuthUserForm, RegisterUserForm
 from .lab2 import uncipher_str
 from cabinet.models import Pupil
 
@@ -14,10 +17,13 @@ def confirm(request, key):
     user = User.objects.get(username=username)
     user.is_active = True
     user.save()
-    pupil = Pupil()
-    pupil.user = user
-    pupil.save()
-    template = 'registration/confirm_page.html'
+    try:
+        pupil = Pupil.objects.get(user=user)
+    except ObjectDoesNotExist:
+        pupil = Pupil()
+        pupil.user = user
+        pupil.save()
+        template = 'registration/confirm_page.html'
     return render(request, template)
 
 class UserLoginView(LoginView):

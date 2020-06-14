@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from .lab2 import cipher
 
+from django.core.exceptions import ValidationError
+
+
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
     class Meta:
         model = User
@@ -18,6 +21,8 @@ class AuthUserForm(AuthenticationForm, forms.ModelForm):
 
 class RegisterUserForm(forms.ModelForm):
     email = forms.EmailField()
+    username = forms.CharField(label='username')
+
     class Meta:
         model = User
         fields = ('email', 'username', 'password')
@@ -38,10 +43,17 @@ class RegisterUserForm(forms.ModelForm):
         send_mail(
             'Subject here',
             message,
-            'ENTER YOU GMAIL',
+            'zverkii5@gmail.com',
             [f'{user.email}'],
             fail_silently=False,
         )
         if commit:
             user.save()
         return user
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise ValidationError('Username must be unique')
+
+        return username
