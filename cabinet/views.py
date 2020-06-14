@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 
@@ -12,6 +12,8 @@ from .models import *
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 from django.core.exceptions import PermissionDenied
+
+from django.contrib.auth.models import Permission
 
 
 def get_user_ctx(request):
@@ -47,7 +49,8 @@ def cabinet_view(request):
     return render(request, template, context)
 
 
-class CreateGroupView(CreateView, LoginRequiredMixin):
+class CreateGroupView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+    permission_required = 'cabinet.add_group'
     model = Group
     template_name = 'cabinet/create_group.html'
     form_class = CreateGroup
@@ -66,20 +69,22 @@ class CreateGroupView(CreateView, LoginRequiredMixin):
         return kwargs
 
 
-class CreateCourseView(CreateView, LoginRequiredMixin):
+class CreateCourseView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+    permission_required = 'cabinet.add_course'
     model = Course
     template_name = 'cabinet/create_course.html'
     form_class = CreateCourse
     success_url = reverse_lazy('cabinet_page')
 
-    def form_valid(self, form):
-        if self.request.user.is_staff:
-            return super().form_valid(form)
-        else:
-            raise PermissionDenied
+    #def form_valid(self, form):
+    #    if self.request.user.is_staff:
+    #        return super().form_valid(form)
+    #    else:
+    #       raise PermissionDenied
 
 
-class CreateTeacherView(CreateView, LoginRequiredMixin):
+class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+    permission_required = 'cabinet.add_teacher'
     model = Teacher
     template_name = 'cabinet/create_teacher.html'
     form_class = CreateTeacher
@@ -90,17 +95,26 @@ class CreateTeacherView(CreateView, LoginRequiredMixin):
             self.object = form.save(commit=False)
             user = self.object.user
             pupil = Pupil.objects.get(user=user)
-            user.user_permissions.all()
-            user.user_permissions.remove('cabinet.delete_course', 'cabinet.add_course', 'cabinet.change_course',
-                                         'cabinet.delete_teacher', 'cabinet.add_teacher', 
-                                         'cabinet.change_teacher')
+            user.user_permissions.set(Permission.objects.filter(content_type_id__gte=7))
+            user.save()
+            delete_course = Permission.objects.get(codename='delete_course')
+            add_course = Permission.objects.get(codename='add_course')
+            change_course = Permission.objects.get(codename='change_course')
+            delete_teacher = Permission.objects.get(codename='delete_teacher')
+            add_teacher = Permission.objects.get(codename='add_teacher')
+            change_teacher = Permission.objects.get(codename='change_teacher')
+            user.user_permissions.remove(delete_course, add_course, change_course,
+                                         delete_teacher, add_teacher, 
+                                         change_teacher)
+            user.save()
             pupil.delete()
             return super().form_valid(form)
         else:
             raise PermissionDenied
 
 
-class CreateLessonView(CreateView, LoginRequiredMixin):
+class CreateLessonView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+    permission_required = 'cabinet.add_lesson'
     model = Teacher
     template_name = 'cabinet/create_lesson.html'
     form_class = CreateLesson
