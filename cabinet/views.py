@@ -158,20 +158,24 @@ class DetailPupilView(DetailView, LoginRequiredMixin):
     template_name = 'cabinet/detail_pupil.html'
 
 
-class UpdateGroupView(DetailView, LoginRequiredMixin):
+class UpdateGroupView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_update'
     model = Group
     template_name = 'cabinet/update_group.html'
 
 
-class UpdateCourseView(DetailView, LoginRequiredMixin):
+class UpdateCourseView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_course'
     model = Course
     template_name = 'cabinet/update_course.html'
 
-class UpdateLessonView(DetailView, LoginRequiredMixin):
+class UpdateLessonView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_lesson'
     model = Lesson
     template_name = 'cabinet/update_lesson.html'
 
-class UpdateTeacherView(DetailView, LoginRequiredMixin):
+class UpdateTeacherView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_teacher'
     model = Teacher
     template_name = 'cabinet/update_teacher.html'
 
@@ -181,6 +185,7 @@ class UpdateTeacherView(DetailView, LoginRequiredMixin):
     #    else:
     #        raise PermissionDenied
 
-class UpdatePupilView(DetailView, LoginRequiredMixin):
+class UpdatePupilView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_pupil'
     model = Pupil
     template_name = 'cabinet/update_pupil.html'
