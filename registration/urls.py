@@ -8,5 +8,5 @@ urlpatterns = [
     path('logout', UserLogoutView.as_view(), name='logout_page'),
     path('confirm/<str:key>', confirm, name='confirm_page'),
     path('recover_account/', recover_account, name='recover_account'),
-    path('change_password/<int:pk>/', change_password, name='change_password'),
+    path('change_password/', change_password, name='change_password'),
 ]
