@@ -14,6 +14,8 @@ from .forms import *
 from .lab2 import uncipher_str
 from cabinet.models import Pupil
 
+from django.contrib.auth.decorators import login_required
+
 
 def recover_account(request):
     if request.method == 'POST':
@@ -35,11 +37,22 @@ def recover_account(request):
     else:
         form = RecoverAccountForm()
 
-    return render(request, 'recover_acc.html', {'form':form})
+    return render(request, 'recover_account.html', {'form':form})
 
 
-def change_password(request, user_id):
-    pass
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST, user=request.user)
+        if form.is_valid():
+            user = request.user
+            new_password = form.cleaned_data['new_password']
+            user.set_password(new_password)
+            user.save()
+    else:
+        form = ChangePasswordForm()
+
+    return render(request, 'change_password.html', {'form':form})
 
 
 def confirm(request, key):

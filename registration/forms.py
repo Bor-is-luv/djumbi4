@@ -33,9 +33,19 @@ class ChangePasswordForm(forms.Form):
     new_password = forms.CharField(label='new password')
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+    def clean(self):
+        old_password = self.cleaned_data['old_password']
+        new_password = self.cleaned_data['new_password']
+        if self.user.password != old_password:
+            raise ValidationError("Old password not correct, try again")
+        if old_password == new_password:
+            raise ValidationError("New password cannot be equal to the old password")
+
 
 
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
