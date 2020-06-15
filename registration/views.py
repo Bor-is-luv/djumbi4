@@ -8,9 +8,38 @@ from django.contrib.auth import authenticate, login
 
 from django.core.exceptions import ObjectDoesNotExist
 
-from .forms import AuthUserForm, RegisterUserForm
+from django.core.mail import send_mail
+
+from .forms import *
 from .lab2 import uncipher_str
 from cabinet.models import Pupil
+
+
+def recover_account(request):
+    if request.method == 'POST':
+        form = RecoverAccountForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            name = form.cleaned_data['name']
+            surname = form.cleaned_data['surname']
+            user = User.objects.filter(name=name, surname=surname, email=email)
+            password = User.objects.make_random_password()
+            user.set_password(password)
+            send_mail(
+            'New password',
+            password,
+            'zverkii5@gmail.com',
+            [f'{user.email}'],
+            fail_silently=False)
+            user.save()
+    else:
+        form = RecoverAccountForm()
+
+    return render(request, 'recover_acc.html', {'form':form})
+
+
+def change_password(request, user_id):
+    pass
 
 
 def confirm(request, key):

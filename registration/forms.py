@@ -8,10 +8,40 @@ from .lab2 import cipher
 from django.core.exceptions import ValidationError
 
 
+class RecoverAccountForm(forms.Form):
+    email = forms.EmailField()
+    name = forms.CharField(label='name')
+    surname = forms.CharField(label='surname')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+    def clean(self):
+        super().clean()
+        email = self.cleaned_data['email']
+        name = self.cleaned_data['name']
+        surname = self.cleaned_data['surname']
+        if not User.objects.filter(email=email, name=name, surname=surname).exists():
+            raise ValidationError('User not exists')
+
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(label='old password')
+    new_password = forms.CharField(label='new password')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
 class AuthUserForm(AuthenticationForm, forms.ModelForm):
     class Meta:
         model = User
-        fields = ('username', 'password', )
+        fields = ('username', 'password')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
