@@ -7,6 +7,8 @@ from .lab2 import cipher
 
 from django.core.exceptions import ValidationError
 
+import re
+
 
 class RecoverAccountForm(forms.Form):
     email = forms.EmailField()
@@ -95,5 +97,8 @@ class RegisterUserForm(forms.ModelForm):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).exists():
             raise ValidationError('Username must be unique')
+
+        if not re.fullmatch(r'^[a-zA-Z0-9]+$', username):
+            raise ValidationError('Only eng letters and numbers')
 
         return username
