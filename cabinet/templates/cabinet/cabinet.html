@@ -11,7 +11,6 @@
 <a class="navbar-brand" href="#">Личный кабинет преподавателя</a>
 <a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
 <a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
-<a class="navbar-brand" href="{% url 'create_lesson_page' %}">Создать урок</a>
 <!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
 <a class="navbar-brand" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
@@ -37,14 +36,16 @@
             {{request.user.first_name}}
             {{request.user.last_name}}
           </p>
+          {% if user_type == 'teacher' %}
           <h5 class="card-title">Телефон</h5>
           <p class="card-text">
-            %Телефон% А зачем здесь телефон?
+            {{teacher.phone_number}}
           </p>
           <h5 class="card-title">О себе</h5>
           <p class="card-text">
-            %О себе% А зачем здесь о себе?
+            {{teacher.info}}
           </p>
+          {% endif %}
           <a href="#" class="btn btn-primary text-right">Редактировать</a>
         </div>
       </div>
@@ -96,11 +97,12 @@
     {% endif %}
     <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
       <div class="card mb-4 shadow w-100">
-        <h5 class="card-header">Чат</h5>
+        <h5 class="card-header">Йо</h5>
         <div class="card-body">
           <p class="card-text ">Фукнкциональные кнопки</p>
           <div class="d-flex">
-            <a href="#" class="btn btn-primary mr-3">Общий чат</a>
+
+            <a href="{% url 'create_lesson_page' %}" class="btn btn-primary mr-3">Создать урок</a>
             <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a>
           </div>
         </div>
