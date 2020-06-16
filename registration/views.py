@@ -107,4 +107,4 @@ class UserRegisterView(CreateView):
 
 
 class UserLogoutView(LogoutView):
-    next_page = 'registration_page'
+    next_page = 'login_page'
