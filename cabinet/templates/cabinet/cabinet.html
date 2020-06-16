@@ -1,362 +1,161 @@
+{% extends "index.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <title>Your account</title>
-  </head>
-  <body>
-    <header></header>
 
-    <!--NAVBAR-->
-    <nav class="navbar navbar-light bg-light justify-content-start flex-wrap">
-      <img src="{% static 'logo.svg' %}" alt="logo" class="logo-pic mr-3" />
-      <!-- Размер на маленьких экранах -->
-      <a class="navbar-brand" href="#" style="color: #0f45c7; font-size: 25px;"
-        >Личный кабинет преподавателя</a
-      >
-      <a
-        class="navbar-brand"
-        href="{% url 'create_course_page' %}"
-        style="color: #0f45c7; font-size: 25px;"
-        >Создать курс</a
-      >
-      <a
-        class="navbar-brand"
-        href="{% url 'create_teacher_page' %}"
-        style="color: #0f45c7; font-size: 25px;"
-        >Создать учителя</a
-      >
-      <a
-        class="navbar-brand"
-        href="{% url 'create_lesson_page' %}"
-        style="color: #0f45c7; font-size: 25px;"
-        >Создать урок</a
-      >
-      <a class="navbar-brand" href="#" style="color: #0f45c7; font-size: 25px;"
-        >{{ request.user }}
-      </a>
-      <a
-        class="navbar-brand"
-        href="{% url 'logout_page' %}"
-        style="color: #0f45c7; font-size: 25px;"
-      >
-        Выход
-      </a>
-    </nav>
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
-    <!--JUMBOTRON-->
-    <div class="jumbotron jumbotron-fluid pt-4 pb-4">
-      <div class="container">
-        <h1 class="display-4">Добро пожаловать, {{ user_type }}</h1>
-        <p class="lead">
-          %Имя Фамилия%
-        </p>
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}" />
+{% endblock %}
+
+
+<!--NAVBAR-->
+{% block navbar %}
+<a class="navbar-brand" href="#">Личный кабинет преподавателя</a>
+<a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
+<a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
+<a class="navbar-brand" href="{% url 'create_lesson_page' %}">Создать урок</a>
+<!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
+<a class="navbar-brand" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+
+<!--JUMBOTRON-->
+<div class="jumbotron jumbotron-fluid pt-4 pb-4">
+  <div class="container">
+    <h1 class="display-5">Добро пожаловать, {{ request.user.first_name }}</h1>
+  </div>
+</div>
+
+<!--INFO-->
+<div class="container">
+  <div class="row">
+    <div class="col-xs-6 col-md-7 col-lg-7 col-xl-5">
+      <div class="card mb-4 shadow">
+        <h5 class="card-header">Информация</h5>
+        <div class="card-body">
+          <h5 class="card-title">ФИО</h5>
+          <p class="card-text">
+            {{request.user.first_name}}
+            {{request.user.last_name}}
+          </p>
+          <h5 class="card-title">Телефон</h5>
+          <p class="card-text">
+            %Телефон% А зачем здесь телефон?
+          </p>
+          <h5 class="card-title">О себе</h5>
+          <p class="card-text">
+            %О себе% А зачем здесь о себе?
+          </p>
+          <a href="#" class="btn btn-primary text-right">Редактировать</a>
+        </div>
       </div>
     </div>
-    <!--INFO-->
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-6 col-md-7 col-lg-7 col-xl-5">
-          <div class="card mb-4 shadow">
-            <h5 class="card-header">Информация</h5>
-            <div class="card-body">
-              <h5 class="card-title">ФИО</h5>
-              <p class="card-text">
-                 {{user}} 
-                %Фамилия Имя Отчество%
-              </p>
-              <h5 class="card-title">Телефон</h5>
-              <p class="card-text">
-                %Телефон% А зачем здесь телефон?
-              </p>
-              <h5 class="card-title">О себе</h5>
-              <p class="card-text">
-                %О себе% А зачем здесь о себе?
-              </p>
-              <a href="#" class="btn btn-primary text-right">Редактировать</a>
-            </div>
-          </div>
-        </div>
-        <div
-          class="col-xs-6 col-md-5 col-lg-5 col-xl-7"
-          style="max-height: 460px;"
-        >
-          <!-- Вариант поместить информацию о курсах
+    <div class="col-xs-6 col-md-5 col-lg-5 col-xl-7" style="max-height: 460px;">
+      <!-- Вариант поместить информацию о курсах
                в INFO, а на их место разместить кнопки
                из MAKE GROUP AND CHAT BUTTONS
           -->
-          <!--COURSES-->
-          <div
-            class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start"
-          >
-          {% for course in courses %}
-            <div class="card mb-4 shadow width-for-course-card">
-              <div class="card-body">
-                <h5 class="card-title">Курс</h5>
-                <p class="card-text">{{course.id}}</p>
-                <h5 class="card-title">Группа</h5>
-                <p class="card-text d-flex ">
-                  {% for group in groups %}
-                    {{group}}
-                  {% endfor %}
-                </p>
-              </div>
-            </div>
-            {% endfor %}
+      <!--COURSES-->
+      <div class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start">
+        <div class="card mb-4 shadow width-for-course-card">
+          <div class="card-header">Курсы</div>
+          <div class="card-body">
+            {% for course in courses %}
+            <h5 class="card-title">Курсы</h5>
+            <p class="card-text d-flex ">{{course.name}}</p>
+            <h5 class="card-title">Группы</h5>
+            <p class="card-text d-flex ">
+              {% for group in groups %}
+              {{group}}
+              {% endfor %}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MAKE GROUP -->
+<div class="container">
+  <div class="row">
+    <!-- ДОБАВЛЕНИЕ КНОПКИ ГРУППЫ ПРИ ПРОФИЛЕ УЧИТЕЛЯ -->
+    {% if user_type == 'teacher' %}
+    <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
+      <div class="card mb-4 shadow w-100">
+        <h5 class="card-header">Создание группы</h5>
+        <div class="card-body">
+          <!-- Выбор будет здесь или на странице курса? -->
+          <!-- Где вообще будем брать курсы? -->
+          <p class="card-text">Создать новую учебную группу для курса</p>
+          <div class="d-flex">
+            <a href="{% url 'create_group_page' %}" class="btn btn-primary">Создать группу</a>
           </div>
         </div>
       </div>
     </div>
-    <!-- MAKE GROUP -->
-    <div class="container">
-      <div class="row">
-        <!-- ДОБАВЛЕНИЕ КНОПКИ ГРУППЫ ПРИ ПРОФИЛЕ УЧИТЕЛЯ -->
-        {% if user_type == 'teacher' %}
-        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
-          <div class="card mb-4 shadow w-100">
-            <h5 class="card-header">Создание группы</h5>
-            <div class="card-body">
-              <!-- Выбор будет здесь или на странице курса? -->
-              <!-- Где вообще будем брать курсы? -->
-              <p class="card-text">Создать новую учебную группу для курса</p>
-              <div class="d-flex">
-                <a href="{% url 'create_group_page' %}" class="btn btn-primary">Создать группу</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% endif %}
-        <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
-          <div class="card mb-4 shadow w-100">
-            <h5 class="card-header">Чат</h5>
-            <div class="card-body">
-              <p class="card-text ">Фукнкциональные кнопки</p>
-              <div class="d-flex">
-                <a href="#" class="btn btn-primary mr-3">Общий чат</a>
-                <a href="#" class="btn btn-primary mr-3"
-                  >Чат с преподавателем</a
-                >
-              </div>
-            </div>
+    {% endif %}
+    <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
+      <div class="card mb-4 shadow w-100">
+        <h5 class="card-header">Чат</h5>
+        <div class="card-body">
+          <p class="card-text ">Фукнкциональные кнопки</p>
+          <div class="d-flex">
+            <a href="#" class="btn btn-primary mr-3">Общий чат</a>
+            <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a>
           </div>
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="accordion shadow" id="accordionLessons">
-        <!-- КУРС 1 -->
-        <div class="card mb-3 shadow">
-          <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-              <button
-                class="btn btn-link"
-                type="button"
-                data-toggle="collapse"
-                data-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                %Курс 1%
-              </button>
-            </h2>
+  </div>
+</div>
+<!-- DETAILED COURSES -->
+<div class="container">
+  <div class="accordion shadow" id="accordionLessons">
+    <!-- КУРС 1 -->
+    {% for course in courses %}
+    <div class="card mb-3 shadow">
+      <div class="card-header" id="{{course.id}}">
+        <h2 class="mb-0">
+          <button class="btn btn-link accordion-btn" type="button" data-toggle="collapse" data-target="#{{course.name}}"
+            aria-expanded="true" aria-controls="{{course.name}}">
+            {{course.name}}
+          </button>
+        </h2>
+      </div>
+      <div id="{{course.name}}" class="collapse show" aria-labelledby="{{course.id}}" data-parent="#accordionLessons">
+        <div class="card-body lesson-search border">
+          <h5>
+            Поиск по урокам
+          </h5>
+          <form class="form-inline lesson-search-form">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
+            <button class="btn btn-primary my-2 my-sm-0" type="submit">
+              Поиск
+            </button>
+          </form>
+        </div>
+        <!-- Успех или неудачу отмечать css классами bg-success, bg-danger, bg-warning, bg-light -->
+        <!-- LESSONS -->
+        {% for lesson in lessons %}
+        <div class="card-body border  d-flex flex-wrap flex-row justify-content-between {% if user_type == 'pupil' %} text-white
+            {% if lesson.homework_solution == None %} bg-danger {% endif %}
+            {% if lesson.homework_solution != None %} bg-success {% endif %}
+          {% endif %}">
+          <div class="lesson-number font-weight-bold">
+            № {{lesson.number}}
           </div>
-
-          <div
-            id="collapseOne"
-            class="collapse show"
-            aria-labelledby="headingOne"
-            data-parent="#accordionLessons"
-          >
-            <div class="card-body lesson-search border">
-              <h3>
-                Поиск по урокам
-              </h3>
-              <form class="form-inline">
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn my-2 my-sm-0" type="submit">
-                  Поиск
-                </button>
-              </form>
-            </div>
-            <!-- Успех или неудачу отмечать css классами bg-success, bg-danger, bg-warning, bg-light -->
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№1%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Обычное занятие
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-success text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№2%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Зелёные занятия полностью засчитаны
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-danger text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№3%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Красные занятия нужно сделать при истекшем сроке
-                или переделать
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-warning text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№4%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Жёлтые занятия нужно исправить и отправить заново
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
+          <div class="text-center overflow-auto">
+            {{lesson.name}}
+          </div>
+          <div class="btn {% if user_type == 'pupil' %} text-white {% endif %}" href="">
+            <!-- ajax? -->
+            Перейти к занятию
           </div>
         </div>
-        <!-- КУРС 2 -->
-        <div class="card mb-3 shadow">
-          <div class="card-header" id="headingTwo">
-            <h2 class="mb-0">
-              <button
-                class="btn btn-link"
-                type="button"
-                data-toggle="collapse"
-                data-target="#collapseTwo"
-                aria-expanded="true"
-                aria-controls="collapseTwo"
-              >
-                %Курс 2%
-              </button>
-            </h2>
-          </div>
-
-          <div
-            id="collapseTwo"
-            class="collapse show"
-            aria-labelledby="headingTwo"
-            data-parent="#accordionLessons"
-          >
-            <div class="card-body lesson-search border">
-              <h3>
-                Поиск по урокам
-              </h3>
-              <form class="form-inline">
-                <input
-                  class="form-control mr-sm-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn my-2 my-sm-0" type="submit">
-                  Поиск
-                </button>
-              </form>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№1%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Обычное занятие
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-success text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№2%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Зелёные занятия полностью засчитаны
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-danger text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№3%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Красные занятия нужно сделать при истекшем сроке
-                или переделать
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-            <div
-              class="card-body d-flex flex-wrap flex-row justify-content-between bg-warning text-white"
-            >
-              <div class="lesson-number font-weight-bold">
-                %№4%
-              </div>
-              <div class="text-center overflow-auto">
-                %Тема занятия% Жёлтые занятия нужно исправить и отправить заново
-              </div>
-              <div class="btn">
-                Перейти к занятию
-              </div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
-  </body>
-</html>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

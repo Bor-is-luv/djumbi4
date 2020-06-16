@@ -1,19 +1,19 @@
 body {
-    color: #0f45c7;
+    color: #000000;
     background: #f8f9fa;
 }
 
 a {
-    color: #0f45c7 !important;
+    color: #ffffff;
 }
+
 
 .card-body {
     background: #ffffff;
 }
 
 .card-header {
-    background: #0f45c7;
-    color: #ffffff;
+    background: #e9ecef !important;
 }
 
 .btn {
@@ -101,4 +101,12 @@ a:link {
 form {
     padding-left: 40%;
     padding-right: 40%;
+}
+
+.accordion-btn {
+    font-size: 100% !important;
+}
+
+.lesson-search-form {
+    padding: 0%;
 }
