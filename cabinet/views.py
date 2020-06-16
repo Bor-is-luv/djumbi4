@@ -22,6 +22,7 @@ def get_user_ctx(request):
     context['user'] = ""
     try:
         pupil = Pupil.objects.get(user=user)
+        context['pupil'] = pupil
         context['user'] = pupil.user.username
         context['courses'] = Course.objects.filter(pupils=pupil)
         context['groups'] = Group.objects.filter(pupils=pupil)
@@ -30,6 +31,7 @@ def get_user_ctx(request):
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         try:
             teacher = Teacher.objects.get(user=user)
+            context['teacher'] = teacher
             context['user'] = teacher.user.username
             context['courses'] = Course.objects.filter(teachers=teacher)
             context['groups'] = Group.objects.filter(teacher=teacher)
