@@ -15,6 +15,10 @@ from django.core.exceptions import PermissionDenied
 
 from django.contrib.auth.models import Permission
 
+from django.http import HttpRequest, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
 
 def get_user_ctx(request):
     user = request.user
@@ -22,8 +26,7 @@ def get_user_ctx(request):
     context['user'] = ""
     try:
         pupil = Pupil.objects.get(user=user)
-        context['pupil'] = pupil
-        context['user'] = pupil.user.username
+        context['user'] = pupil
         context['courses'] = Course.objects.filter(pupils=pupil)
         context['groups'] = Group.objects.filter(pupils=pupil)
         context['lessons'] = Lesson.objects.filter(pupils=pupil)
@@ -31,8 +34,7 @@ def get_user_ctx(request):
     except (ObjectDoesNotExist, MultipleObjectsReturned):
         try:
             teacher = Teacher.objects.get(user=user)
-            context['teacher'] = teacher
-            context['user'] = teacher.user.username
+            context['user'] = teacher
             context['courses'] = Course.objects.filter(teachers=teacher)
             context['groups'] = Group.objects.filter(teacher=teacher)
             context['lessons'] = Lesson.objects.filter(teacher=teacher)
@@ -86,6 +88,10 @@ class CreateCourseView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
 
 
 class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+    
+    response_data = {'status': 'ok'}
+    #pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
+
     permission_required = 'cabinet.add_teacher'
     model = Teacher
     template_name = 'cabinet/create_teacher.html'
@@ -191,3 +197,36 @@ class UpdatePupilView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
     permission_required = 'cabinet.change_pupil'
     model = Pupil
     template_name = 'cabinet/update_pupil.html'
+
+
+# AJAX
+
+def fetch_lesson_ajax(request):
+    
+    response_data = {'status': 'ok'}
+    #pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
+
+    # get any group of that course
+    # group = Group.objects.filter(course_id=request.GET.get('course_id'))[0]
+    #print(group)
+
+    # get the lesson by its group and number
+    print(request.GET.get('lesson_id'))
+    lesson = Lesson.objects.get(id=request.GET.get('lesson_id'))
+    #course = Course.objects.get(id=request.GET.get('course_id'))
+    #print(lesson)
+    
+
+    # make a json with a response data 
+    response_data['name'] = lesson.name
+    response_data['number'] = lesson.number
+    response_data['materials'] = lesson.materials
+    response_data['homework_task'] = lesson.homework_task
+    #response_data['course'] = course.name
+
+    # convert it into json format
+    content = json.dumps(response_data)
+    # make the response itself
+    response = HttpResponse(content, content_type='application/json')
+
+    return response

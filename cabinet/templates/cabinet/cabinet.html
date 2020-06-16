@@ -3,6 +3,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'style.css' %}" />
+<script type="text/javascript" src="{% static 'fetch_lesson_ajax.js' %}"></script>
 {% endblock %}
 
 
@@ -39,11 +40,11 @@
           {% if user_type == 'teacher' %}
           <h5 class="card-title">Телефон</h5>
           <p class="card-text">
-            {{teacher.phone_number}}
+            {{user.phone_number}}
           </p>
           <h5 class="card-title">О себе</h5>
           <p class="card-text">
-            {{teacher.info}}
+            {{user.info}}
           </p>
           {% endif %}
           <a href="#" class="btn btn-primary text-right">Редактировать</a>
@@ -149,15 +150,47 @@
           <div class="text-center overflow-auto">
             {{lesson.name}}
           </div>
-          <div class="btn {% if user_type == 'pupil' %} text-white {% endif %}" href="">
-            <!-- ajax? -->
+           <!-- <div class="btn {% if user_type == 'pupil' %} text-white {% endif %}"
+            onclick="fetch_lesson_ajax('{% url 'fetch_lesson_ajax_url' %}', {{lesson.pk}}, {{course.pk}}, {{user.pk}})">
             Перейти к занятию
-          </div>
+          </div>  -->
+          <button class="trigger"
+          onclick="fetch_lesson_ajax('{% url 'fetch_lesson_ajax_url' %}', {{lesson.pk}}, {{course.pk}}, {{user.pk}})"
+            >
+            Посмотреть занятие
+          </button>
         </div>
         {% endfor %}
       </div>
     </div>
     {% endfor %}
   </div>
+
 </div>
+<!-- MODAL WINDOW -->
+
+<!-- 
+<script type="text/javascript">
+
+  let modal = document.getElementById("myModal");
+  let trigger = document.querySelector(".trigger");
+  let closeButton = document.getElementsByClassName("close")[0];
+
+  trigger.onclick = function() {
+    ;
+    modal.style.display = 'block';
+  }
+
+  function toggleModal() {
+    console.log("button triggered!");
+    modal.classList.toggle("show-modal");
+  }
+
+  window.onclick = function(event) {
+    if (event.target = modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+</script> -->
 {% endblock %}
