@@ -1,9 +1,14 @@
-from django.forms import ModelForm
+from django import forms
 
-from .models import Group, Course, Teacher, Lesson
+from .models import *
 
 
-class CreateGroup(ModelForm):
+class AddSolution(forms.Form):
+    class Meta:
+        model = Course
+        fields = ['solution']
+
+class CreateGroup(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['course', 'name', 'time', 'day']
@@ -22,7 +27,7 @@ class CreateGroup(ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-class CreateCourse(ModelForm):
+class CreateCourse(forms.ModelForm):
     class Meta:
         model = Course
         fields = ['name', 'hours']
@@ -33,7 +38,7 @@ class CreateCourse(ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-class CreateTeacher(ModelForm):
+class CreateTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = '__all__'
@@ -44,7 +49,7 @@ class CreateTeacher(ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
-class CreateLesson(ModelForm):
+class CreateLesson(forms.ModelForm):
     class Meta:
         model = Lesson
         fields = ['group', 'materials', 'number', 'name']
