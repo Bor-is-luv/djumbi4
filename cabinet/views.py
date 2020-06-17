@@ -132,7 +132,7 @@ class CreateLessonView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
         self.object = form.save(commit=False)
         teacher = Teacher.objects.get(user=self.request.user)
         self.object.teacher = teacher
-        pupils = Pupil.objects.filter(group=self.object.group).all()
+        pupils = Pupil.objects.filter(group=self.object.group)
         self.objects.pupils = pupils
         self.object.save()
         return super().form_valid(form)
@@ -153,9 +153,9 @@ def detail_lesson_view(request, lesson_id):
     context = {}
     lesson = Lesson.objects.get(id=lesson_id)
     if ctx['user_type'] == 'pupil':
-        context['homework'] = Solution.objects.filter(lesson=lesson, pupil=ctx['pupil']).all()
+        context['homework'] = Solution.objects.filter(lesson=lesson, pupil=ctx['pupil'])
     elif ctx['user_type'] == 'teacher':
-        context['homework'] = Solution.objects.filter(lesson=lesson, teacher=ctx['teacher']).all()
+        context['homework'] = Solution.objects.filter(lesson=lesson, teacher=ctx['teacher'])
 
     if request.method == 'POST' and ctx['user_type'] == 'pupil':
         form = AddSolution(request.POST, request.FILES)
