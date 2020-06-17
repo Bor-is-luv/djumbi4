@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
 
-from .forms import CreateGroup, CreateCourse, CreateTeacher, CreateLesson
+from .forms import *
 from .models import *
 
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -132,6 +132,8 @@ class CreateLessonView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
         self.object = form.save(commit=False)
         teacher = Teacher.objects.get(user=self.request.user)
         self.object.teacher = teacher
+        pupils = Pupil.objects.filter(group=self.object.group).all()
+        self.objects.pupils = pupils
         self.object.save()
         return super().form_valid(form)
 
@@ -146,9 +148,25 @@ class DetailCourseView(DetailView, LoginRequiredMixin):
     template_name = 'cabinet/detail_course.html'
 
 
-class DetailLessonView(DetailView, LoginRequiredMixin):
-    model = Lesson
-    template_name = 'cabinet/detail_lesson.html'
+def detail_lesson_view(request, lesson_id):
+    ctx = get_user_ctx(request)
+    context = {}
+    lesson = Lesson.objects.get(id=lesson_id)
+    if ctx['user_type'] == 'pupil':
+        context['homework'] = Solution.objects.filter(lesson=lesson, pupil=ctx['pupil']).all()
+    elif ctx['user_type'] == 'teacher':
+        context['homework'] = Solution.objects.filter(lesson=lesson, teacher=ctx['teacher']).all()
+
+    if request.method == 'POST' and ctx['user_type'] == 'pupil':
+        form = AddSolution(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+    elif ctx['user_type'] == 'pupil':
+        form = AddSolution()
+
+    context['form'] = form
+    return render(request, 'cabinet/detail_pupil.html', context)
 
 
 class DetailGroupView(DetailView, LoginRequiredMixin):
