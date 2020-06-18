@@ -76,7 +76,6 @@ class Lesson(models.Model):
     number = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=30)
     homework_task = models.TextField(blank=True, null=True)
-    homework_solution = models.FileField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.group} {self.number}'
@@ -84,3 +83,10 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
+
+
+class Solution(models.Model):
+    homework_solution = models.FileField(blank=True, null=True)
+    lesson = models.ForeignKey(Lesson, on_delete=models.DO_NOTHING)
+    pupil = models.ForeignKey(Pupil, on_delete=models.DO_NOTHING)
+    done = models.BooleanField(default=False)
