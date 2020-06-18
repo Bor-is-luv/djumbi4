@@ -12,21 +12,22 @@ function build_query(base_url, ...args) {
 async function fetch_lesson_ajax(url, lesson_id, course_id, user_id) {
     // Build a query to pass to the server
     url = build_query(url, 'lesson_id', lesson_id, 'course_id', course_id, "user_id", user_id);
-    // 
+    // GET
     let fetched_response = await fetch(url);
 
     if (fetched_response.ok) { // if 200
         let json = await fetched_response.json();
-        alert('№' + json.number + '\n\n\n' +
+
+        // Add url to lesson page
+        let lesson_info = '№' + json.number + '\n\n\n' +
         json.name + '\n\n' +
         'Материалы к занятию:\n\n' +
         json.materials + '\n\n\n' + 'Домашнее задание:\n\n' +
-        json.homework_task);
+        json.homework_task;
+
+        alert(lesson_info);
         //document.getElementById('lesson_name').innerHTML = json.name;
-
-        // Modal window here
-
-        console.log(json.name);
+        //console.log(json.name);
     } else {
         alert("Ошибка HTTP: " + fetched_response.status);
     }

@@ -22,8 +22,6 @@ import json
 
 def get_user_ctx(request):
     user = request.user
-    context = {}
-    context['user'] = ""
     try:
         pupil = Pupil.objects.get(user=user)
         context['user'] = pupil
@@ -202,27 +200,16 @@ class UpdatePupilView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
 # AJAX
 
 def fetch_lesson_ajax(request):
-    
     response_data = {'status': 'ok'}
-    #pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
 
-    # get any group of that course
-    # group = Group.objects.filter(course_id=request.GET.get('course_id'))[0]
-    #print(group)
-
-    # get the lesson by its group and number
-    print(request.GET.get('lesson_id'))
+    # get the lesson by its id
     lesson = Lesson.objects.get(id=request.GET.get('lesson_id'))
-    #course = Course.objects.get(id=request.GET.get('course_id'))
-    #print(lesson)
-    
 
     # make a json with a response data 
     response_data['name'] = lesson.name
     response_data['number'] = lesson.number
     response_data['materials'] = lesson.materials
     response_data['homework_task'] = lesson.homework_task
-    #response_data['course'] = course.name
 
     # convert it into json format
     content = json.dumps(response_data)
