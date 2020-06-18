@@ -1,6 +1,11 @@
+// build a GET query from url and an even number of parameters
 function build_query(base_url, ...args) {
     base_url += '?';
-    for (let i = 0; i < args.length; i+=2) {
+    // error case returns base_url
+    if (args.length % 2 != 0) {
+        return base_url;
+    }
+    for (let i = 0; i < args.length; i += 2) {
         base_url += args[i] + '=' + args[i + 1];
         if (i != args.length - 2) {
             base_url += '&';
@@ -18,7 +23,7 @@ async function fetch_lesson_ajax(url, lesson_id, course_id, user_id) {
     if (fetched_response.ok) { // if 200
         let json = await fetched_response.json();
 
-        // Add url to lesson page
+        // TODO Add url to lesson page
         let lesson_info = '№' + json.number + '\n\n\n' +
         json.name + '\n\n' +
         'Материалы к занятию:\n\n' +
@@ -26,8 +31,6 @@ async function fetch_lesson_ajax(url, lesson_id, course_id, user_id) {
         json.homework_task;
 
         alert(lesson_info);
-        //document.getElementById('lesson_name').innerHTML = json.name;
-        //console.log(json.name);
     } else {
         alert("Ошибка HTTP: " + fetched_response.status);
     }
