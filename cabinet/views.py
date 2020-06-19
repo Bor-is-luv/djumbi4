@@ -270,7 +270,7 @@ def search_lesson_ajax(request):
         # find the specific lesson
         # in SQLite non-ASCII characters are case-sensitive only
         # sad T-T
-        lessons_to_find = lessons.filter(name__icontains=request_data['keywords'])
+        lessons_to_find = Lesson.objects.filter(name__icontains=request_data['keywords'])
         for lesson in lessons_to_find.all():
             response_data['lesson_name'].append(lesson.name)
             response_data['lesson_number'].append(lesson.number)
