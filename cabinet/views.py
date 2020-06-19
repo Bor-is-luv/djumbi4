@@ -286,7 +286,7 @@ def get_pupil_lessons(request, pupil_id, course_id):
     context['lessons'] = []
     pupil = Pupil.objects.get(pupil_id)
     course = Course.objects.get(course_id)
-    groups = course.group_set.all()
+    groups = Groups.objects.filter(course=course) #course.group_set.all()
     for group in groups:
         if pupil in group.pupils:
             lessons = Lesson.objects.filter(group=group)
