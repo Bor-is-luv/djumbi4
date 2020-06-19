@@ -290,7 +290,7 @@ def get_pupil_lessons(request, pupil_id, course_id):
     for group in groups:
         if pupil in group.pupils:
             lessons = Lesson.objects.filter(group=group)
-            context['lessons'].append(lessons)
+            context['lessons'].extend(lessons)
 
 
     template = ???
