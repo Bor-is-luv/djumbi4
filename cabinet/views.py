@@ -89,7 +89,7 @@ class CreateCourseView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
 class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
 
     response_data = {'status': 'ok'}
-    #pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
+    # pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
 
     permission_required = 'cabinet.add_teacher'
     model = Teacher
@@ -257,36 +257,34 @@ def search_lesson_ajax(request):
 
     # return all the lessons
     # TODO return the lessons only from the specific course
-       try:
-            user = Pupil.objects.get(pk=request_data['user_id'])
+    try:
+        user = Pupil.objects.get(pk=request_data['user_id'])
+        course = Course.objects.get(name=request_data['course_name'])
+        groups = Groups.objects.filter(course_id=course.id)
+        for group in groups:
+            if pupil in group.pupils:
+                lessons = Lesson.objects.filter(group_id=group.id)
+                if (request_data['keywords']) is not '':
+                    lessons = lessons.filter(name__icontains=request_data['keywords'])
+                for lesson in lessons:                        
+                    response_data['lesson_name'].append(lesson.name)
+                    response_data['lesson_number'].append(lesson.number)
+                    response_data['lesson_id'].append(lesson.id)
+    except:
+        try:
             course = Course.objects.get(name=request_data['course_name'])
-            groups = Groups.objects.filter(course_id=course.id)
+            user = Teacher.objects.get(pk=request_data['user_id'])
+            groups = Group.objects.filter(teacher_id=user.id, course_id=course.id)
             for group in groups:
-                if pupil in group.pupils:
-                    lessons = Lesson.objects.filter(group_id=group.id)
-                    if (request_data['keywords']) is not '':
-                        lessons = lessons.filter(
-                            name__icontains=request_data['keywords'])
-                    for lesson in lessons:
-                        response_data['lesson_name'].append(lesson.name)
-                        response_data['lesson_number'].append(lesson.number)
-                        response_data['lesson_id'].append(lesson.id)
+                lessons = Lesson.objects.filter(group_id=group.id)
+                if (request_data['keywords']) is not '':
+                    lessons = lessons.filter(
+                    name__icontains=request_data['keywords'])
+                for lesson in lessons:
+                    response_data['lesson_name'].append(lesson.name)
+                    response_data['lesson_number'].append(lesson.number)
+                    response_data['lesson_id'].append(lesson.id)
         except:
-            try:
-                course = Course.objects.get(name=request_data['course_name'])
-                user = Teacher.objects.get(pk=request_data['user_id'])
-                groups = Group.objects.filter(
-                    teacher_id=user.id, course_id=course.id)
-                for group in groups:
-                    lessons = Lesson.objects.filter(group_id=group.id)
-                    if (request_data['keywords']) is not '':
-                        lessons = lessons.filter(
-                            name__icontains=request_data['keywords'])
-                    for lesson in lessons:
-                        response_data['lesson_name'].append(lesson.name)
-                        response_data['lesson_number'].append(lesson.number)
-                        response_data['lesson_id'].append(lesson.id)
-            except:
                 print('yo')
         # find the user, then find the course, then finally find the group
         # and the lesson from that group
@@ -294,11 +292,6 @@ def search_lesson_ajax(request):
         # find the specific lesson
         # in SQLite non-ASCII characters are case-sensitive only
         # sad T-T
-        # lessons_to_find = Lesson.objects.filter(name__icontains=request_data['keywords'])
-        # for lesson in lessons_to_find.all():
-        #     response_data['lesson_name'].append(lesson.name)
-            # response_data['lesson_number'].append(lesson.number)
-            # response_data['lesson_id'].append(lesson.id)
 
     content = json.dumps(response_data)
     response = HttpResponse(content, content_type='application/json')
@@ -317,7 +310,7 @@ def get_pupil_lessons(request, pupil_id, course_id):
             context['lessons'].extend(lessons)
 
 
-    template = ???
+    # template = ???
     return render(request, template, context)
 
     
