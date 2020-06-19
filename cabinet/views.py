@@ -304,3 +304,20 @@ def search_lesson_ajax(request):
     response = HttpResponse(content, content_type='application/json')
 
     return response
+
+def get_pupil_lessons(request, pupil_id, course_id):
+    context = {}
+    context['lessons'] = []
+    pupil = Pupil.objects.get(pupil_id)
+    course = Course.objects.get(course_id)
+    groups = Groups.objects.filter(course=course) #course.group_set.all()
+    for group in groups:
+        if pupil in group.pupils:
+            lessons = Lesson.objects.filter(group=group)
+            context['lessons'].extend(lessons)
+
+
+    template = ???
+    return render(request, template, context)
+
+    

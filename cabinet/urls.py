@@ -20,4 +20,5 @@ urlpatterns = [
     path('update_pupil/<int:pk>/', UpdatePupilView.as_view(), name='update_pupil_page'),
     path('fetch_lesson_ajax/', fetch_lesson_ajax, name='fetch_lesson_ajax_url'),
     path('search_lesson_ajax/', search_lesson_ajax, name='search_lesson_ajax_url'),
+    path('get_pupil_lessons/<int:pupil>/<int:course>', get_pupil_lessons, name='get_pupil_lessons_url'),
 ]
