@@ -14,9 +14,9 @@ function build_query(base_url, ...args) {
     return base_url;
 }
 
-async function fetch_lesson_ajax(url, lesson_id, course_id, user_id) {
+async function fetch_lesson_ajax(url, lesson_id) {
     // Build a query to pass to the server
-    url = build_query(url, 'lesson_id', lesson_id, 'course_id', course_id, "user_id", user_id);
+    url = build_query(url, 'lesson_id', lesson_id);
     // GET
     let fetched_response = await fetch(url);
 

@@ -1,26 +1,23 @@
 // TODO add the url to the lesson to bind it to the button
-function create_lesson_div(lesson_number, lesson_name) {
+function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
     // Create divs for the lesson
     let lesson_div = document.createElement('div');
     lesson_div.className = 'card-body border  d-flex flex-wrap flex-row justify-content-between';
 
     let lesson_number_div = document.createElement('div');
     lesson_number_div.className = 'lesson-number font-weight-bold';
-
     lesson_number_div.innerHTML = lesson_number;
 
     let lesson_name_div = document.createElement('div');
     lesson_name_div.className = 'text-center overflow-auto';
-
     lesson_name_div.innerHTML = lesson_name;
 
     let lesson_fetch_button = document.createElement('button');
     lesson_fetch_button.className = 'trigger'
-
     lesson_fetch_button.innerHTML = 'Посмотреть занятие'
-
-    // fetch_lesson_ajax
-    // lesson_fetch_button.onclick()
+    lesson_fetch_button.onclick = function() {
+        fetch_lesson_ajax(fetch_url, lesson_id);
+    }
 
     // Construct the node tree
     lesson_div.append(lesson_number_div);
@@ -31,7 +28,7 @@ function create_lesson_div(lesson_number, lesson_name) {
 }
 
 // course name for the element to be appended to
-async function search_lesson_ajax(course_name, user_id, url) {
+async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
     // A lesson name to find
     keywords = document.getElementById('search_input').value;
     // Clear the search field
@@ -73,10 +70,9 @@ async function search_lesson_ajax(course_name, user_id, url) {
 
         // Appending new found lessons
         for (let i = 0; i < json.lesson_name.length; i++) {
-            let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i]);
+            let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id, fetch_url);
             node_to_be_appended_to.append(tempLessonNode);
         }
-
     } else {
         alert("Ошибка HTTP: " + fetched_response.status);
     }

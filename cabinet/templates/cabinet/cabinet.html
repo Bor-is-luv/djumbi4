@@ -121,7 +121,7 @@
       <div class="card-header" id="{{course.id}}">
         <h2 class="mb-0">
           <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#{{course.name}}"
-            aria-expanded="false" aria-controls="{{course.name}}" onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}')">
+            aria-expanded="false" aria-controls="{{course.name}}" onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')">
             {{course.name}}
           </button>
         </h2>
@@ -133,7 +133,7 @@
           </h5>
             {% csrf_token %}
             <input id="search_input" class="form-control mr-sm-2" type="search" placeholder="Введите название темы" aria-label="Search" />
-            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}')" id="search_button" class="btn btn-primary my-2 my-sm-0">
+            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')" id="search_button" class="btn btn-primary my-2 my-sm-0">
               Поиск
             </button>
         </div>
@@ -163,30 +163,4 @@
   </div>
 
 </div>
-<!-- MODAL WINDOW -->
-
-<!-- 
-<script type="text/javascript">
-
-  let modal = document.getElementById("myModal");
-  let trigger = document.querySelector(".trigger");
-  let closeButton = document.getElementsByClassName("close")[0];
-
-  trigger.onclick = function() {
-    ;
-    modal.style.display = 'block';
-  }
-
-  function toggleModal() {
-    console.log("button triggered!");
-    modal.classList.toggle("show-modal");
-  }
-
-  window.onclick = function(event) {
-    if (event.target = modal) {
-      modal.style.display = 'none';
-    }
-  }
-
-</script> -->
 {% endblock %}

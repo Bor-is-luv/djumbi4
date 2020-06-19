@@ -22,6 +22,7 @@ import json
 
 def get_user_ctx(request):
     user = request.user
+    context = {}
     try:
         pupil = Pupil.objects.get(user=user)
         context['user'] = pupil
@@ -217,6 +218,7 @@ class UpdatePupilView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
 
 # AJAX
 
+# lesson_id, course_id, user_id
 def fetch_lesson_ajax(request):
     response_data = {'status': 'ok'}
 
@@ -232,6 +234,49 @@ def fetch_lesson_ajax(request):
     # convert it into json format
     content = json.dumps(response_data)
     # make the response itself
+    response = HttpResponse(content, content_type='application/json')
+
+    return response
+
+# 
+# course_name, user_id, keywords
+def search_lesson_ajax(request):
+    request_data = json.loads(request.body)
+
+    response_data = {}
+    response_data['lesson_name'] = []
+    response_data['lesson_number'] = [] 
+    response_data['lesson_id'] = []
+
+    # return all the lessons
+    # TODO return the lessons only from the specific course
+    if request_data['keywords'] is None:
+        lessons_to_find = Lesson.objects.all()
+        for lesson in lessons_to_find:
+            response_data['lesson_name'].append(lesson.name)
+            response_data['lesson_number'].append(lesson.number)
+            response_data['lesson_id'].append(lesson.id)
+    else:
+        try:
+            user = Pupil.objects.get(pk=request_data['user_id'])
+        except:
+            try:
+                user = Teacher.objects.get(pk=request_data['user_id'])
+            except: 
+                print('yo')
+        # find the user, then find the course, then finally find the group
+        # and the lesson from that group
+
+        # find the specific lesson
+        # in SQLite non-ASCII characters are case-sensitive only
+        # sad T-T
+        lessons_to_find = lessons.filter(name__icontains=request_data['keywords'])
+        for lesson in lessons_to_find.all():
+            response_data['lesson_name'].append(lesson.name)
+            response_data['lesson_number'].append(lesson.number)
+            response_data['lesson_id'].append(lesson.id)
+
+    content = json.dumps(response_data)
     response = HttpResponse(content, content_type='application/json')
 
     return response
