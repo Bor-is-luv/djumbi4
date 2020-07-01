@@ -3,19 +3,20 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'RegistrationStyle.css' %}" />
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
 {% endblock %}
 {% block title %} Регистрация {% endblock %}
 {% block navbar %}
 <a class="navbar-brand" href="#">Регистрация</a>
 {% endblock %}
 {% block content %}
-<div class="container registration-container text-center">
+<div class="container registration-container form-holder">
   <form id="add_form" method="post" class="registration-form">
     {% csrf_token %} {{ form }}
-    <button form="add_form" type="submit" class="btn btn-primary mt-2">
+    <button form="add_form" type="submit" class="a-reverse-button mt-3">
       Зарегистрироваться
     </button>
   </form>
-  <div><a href="{% url 'login_page' %}">Авторизация</a></div>
+  <div class="mt-3"><a href="{% url 'login_page' %}">Авторизация</a></div>
 </div>
 {% endblock %}

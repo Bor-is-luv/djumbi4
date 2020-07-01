@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block head %}
-<link rel="stylesheet" href="{% static 'style.css' %}" />
 <script type="text/javascript" src="{% static 'fetch_lesson_ajax.js' %}"></script>
 <script type="text/javascript" src="{% static 'search_lesson_ajax.js' %}"></script>
 {% endblock %}
@@ -11,11 +10,11 @@
 
 <!--NAVBAR-->
 {% block navbar %}
-<a class="navbar-brand" href="#">Личный кабинет преподавателя</a>
+<a class="navbar-brand" href="#">Личный кабинет</a>
 <a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
 <a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
 <!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
-<a class="navbar-brand" href="{% url 'logout_page' %}">Выход</a>
+<a class="quit a-button" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
 
 {% block content %}
@@ -49,7 +48,7 @@
             {{user.info}}
           </p>
           {% endif %}
-          <a href="#" class="btn btn-primary text-right">Редактировать</a>
+          <a class="a-button" href="#">Редактировать</a>
         </div>
       </div>
     </div>
@@ -88,11 +87,9 @@
       <div class="card mb-4 shadow w-100">
         <h5 class="card-header">Создание группы</h5>
         <div class="card-body">
-          <!-- Выбор будет здесь или на странице курса? -->
-          <!-- Где вообще будем брать курсы? -->
           <p class="card-text">Создать новую учебную группу для курса</p>
           <div class="d-flex">
-            <a href="{% url 'create_group_page' %}" class="btn btn-primary">Создать группу</a>
+            <a class="a-button" href="{% url 'create_group_page' %}">Создать группу</a>
           </div>
         </div>
       </div>
@@ -104,8 +101,8 @@
         <div class="card-body">
           <p class="card-text ">Фукнкциональные кнопки</p>
           <div class="d-flex">
-            <a href="{% url 'create_lesson_page' %}" class="btn btn-primary mr-3">Создать урок</a>
-            <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a>
+            <a class="a-button mr-3" href="{% url 'create_lesson_page' %}"> Создать урок </a>
+            <!-- <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a> -->
           </div>
         </div>
       </div>
@@ -133,7 +130,7 @@
           </h5>
             {% csrf_token %}
             <input id="search_input" class="form-control mr-sm-2" type="search" placeholder="Введите название темы" aria-label="Search" />
-            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')" id="search_button" class="btn btn-primary my-2 my-sm-0">
+            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')" id="search_button" class="my-2 my-sm-0 a-button">
               Поиск
             </button>
         </div>
@@ -161,6 +158,5 @@
     </div>
     {% endfor %}
   </div>
-
 </div>
 {% endblock %}

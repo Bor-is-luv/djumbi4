@@ -3,21 +3,21 @@
 
 {% block head %}
 <link rel="stylesheet" href="{% static 'RegistrationStyle.css' %}" />
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
 {% endblock %}
 {% block title%} Авторизация {% endblock %}
 {% block navbar %}
 <a class="navbar-brand" href="#">Авторизация</a>
 {% endblock %}
 {% block content %}
-<div class="container login-container text-center">
+<div class="container registration-container form-holder">
   <form id="add_form" method="post" class="login-form">
     {% csrf_token %} {{ form }}
-    <button form="add_form" type="submit" class="btn btn-primary mt-2">
+    <button form="add_form" type="submit" class="a-reverse-button mt-3">
       Войти
     </button>
   </form>
-  <div>
-    <a href="{% url 'registration_page' %}" style="color: black !important">Нет учётной записи? Зарегистрируйся</a>
-  </div>
+    
+    <div class="mt-3"><a href="{% url 'registration_page' %}">Нет учётной записи? Зарегистрируйся</a></div>
 </div>
 {% endblock %}

@@ -13,7 +13,7 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
     lesson_name_div.innerHTML = lesson_name;
 
     let lesson_fetch_button = document.createElement('button');
-    lesson_fetch_button.className = 'trigger'
+    lesson_fetch_button.className = 'trigger a-button'
     lesson_fetch_button.innerHTML = 'Посмотреть занятие'
     lesson_fetch_button.onclick = function() {
         fetch_lesson_ajax(fetch_url, lesson_id);
@@ -70,7 +70,7 @@ async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
 
         // Appending new found lessons
         for (let i = 0; i < json.lesson_name.length; i++) {
-            let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id, fetch_url);
+            let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id[i], fetch_url);
             node_to_be_appended_to.append(tempLessonNode);
         }
     } else {
