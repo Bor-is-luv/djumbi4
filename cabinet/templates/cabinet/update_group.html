@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Редактирование {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
+<a class="navbar-brand" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+</div>
+
+{% endblock %}
+

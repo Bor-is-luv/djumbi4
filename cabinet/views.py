@@ -178,6 +178,8 @@ def detail_lesson_view(request, lesson_id):
 class DetailGroupView(DetailView, LoginRequiredMixin):
     model = Group
     template_name = 'cabinet/detail_group.html'
+    # get_object()
+    # object
 
 
 class DetailTeacherView(DetailView, LoginRequiredMixin):
@@ -191,7 +193,7 @@ class DetailPupilView(DetailView, LoginRequiredMixin):
 
 
 class UpdateGroupView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
-    permission_required = 'cabinet.change_update'
+    permission_required = 'cabinet.change_group'
     model = Group
     template_name = 'cabinet/update_group.html'
 
