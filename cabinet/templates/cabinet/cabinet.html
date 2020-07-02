@@ -53,10 +53,6 @@
       </div>
     </div>
     <div class="col-xs-6 col-md-5 col-lg-5 col-xl-7" style="max-height: 460px;">
-      <!-- Вариант поместить информацию о курсах
-               в INFO, а на их место разместить кнопки
-               из MAKE GROUP AND CHAT BUTTONS
-          -->
       <!--COURSES-->
       <div class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start">
         <div class="card mb-4 shadow width-for-course-card">
@@ -88,7 +84,6 @@
     {% if user_type == 'teacher' %}
     <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
       <div class="card mb-4 shadow w-100">
-        <h5 class="card-header">Создание группы</h5>
         <div class="card-body">
           <p class="card-text">Создать новую учебную группу для курса</p>
           <div class="d-flex">
@@ -97,53 +92,51 @@
         </div>
       </div>
     </div>
-    {% endif %}
-    <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7">
-      <div class="card mb-4 shadow w-100">
-        <h5 class="card-header">Йо</h5>
-        <div class="card-body">
-          <p class="card-text ">Фукнкциональные кнопки</p>
-          <div class="d-flex">
-            <a class="a-button mr-3" href="{% url 'create_lesson_page' %}"> Создать урок </a>
-            <!-- <a href="#" class="btn btn-primary mr-3">Чат с преподавателем</a> -->
+      <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
+        <div class="card mb-4 shadow w-100">
+          <div class="card-body">
+            <p class="card-text">Создать новый урок для учебной группы</p>
+            <div class="d-flex">
+              <a class="a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
+            </div>
           </div>
         </div>
       </div>
+      {% endif %}
     </div>
   </div>
-</div>
-<!-- DETAILED COURSES -->
-<div class="container">
-  <div class="accordion shadow" id="accordionLessons">
-    <!-- КУРС 1 -->
-    {% for course in courses %}
-    <div class="card mb-3 shadow">
-      <div class="card-header" id="{{course.id}}">
-        <h2 class="mb-0">
-          <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
-            data-target="#{{course.name}}" aria-expanded="false" aria-controls="{{course.name}}"
-            onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
-            {{course.name}}
-          </button>
-        </h2>
-      </div>
-      <div id="{{course.name}}" class="collapse" aria-labelledby="{{course.id}}" data-parent="#accordionLessons">
-        <div id="search_div_{{course.name}}" class="card-body lesson-search border">
-          <h5>
-            Поиск по урокам
-          </h5>
-          {% csrf_token %}
-          <input id="search_input_{{course.name}}" class="search-input-class form-control mr-sm-2" type="search"
-            placeholder="Введите название темы" aria-label="Search" />
-          <button
-            onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
-            id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
-            Поиск
-          </button>
+  <!-- DETAILED COURSES -->
+  <div class="container">
+    <div class="accordion shadow" id="accordionLessons">
+      <!-- КУРС 1 -->
+      {% for course in courses %}
+      <div class="card mb-3 shadow">
+        <div class="card-header" id="{{course.id}}">
+          <h2 class="mb-0">
+            <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
+              data-target="#{{course.name}}" aria-expanded="false" aria-controls="{{course.name}}"
+              onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
+              {{course.name}}
+            </button>
+          </h2>
+        </div>
+        <div id="{{course.name}}" class="collapse" aria-labelledby="{{course.id}}" data-parent="#accordionLessons">
+          <div id="search_div_{{course.name}}" class="card-body lesson-search border">
+            <h5>
+              Поиск по урокам
+            </h5>
+            {% csrf_token %}
+            <input id="search_input_{{course.name}}" class="search-input-class form-control mr-sm-2" type="search"
+              placeholder="Введите название темы" aria-label="Search" />
+            <button
+              onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
+              id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
+              Поиск
+            </button>
+          </div>
         </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
-</div>
-{% endblock %}
+  {% endblock %}
