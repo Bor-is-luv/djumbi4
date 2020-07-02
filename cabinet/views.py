@@ -266,7 +266,7 @@ def search_lesson_ajax(request):
     try:
         user = Pupil.objects.get(pk=request_data['user_id'])
         course = Course.objects.get(name=request_data['course_name'])
-        groups = Groups.objects.filter(course_id=course.id)
+        groups = Group.objects.filter(course_id=course.id) # <--- CHECK IT!!!
         for group in groups:
             if pupil in group.pupils:
                 lessons = Lesson.objects.filter(group_id=group.id)
@@ -309,7 +309,7 @@ def get_pupil_lessons(request, pupil_id, course_id):
     context['lessons'] = []
     pupil = Pupil.objects.get(pupil_id)
     course = Course.objects.get(course_id)
-    groups = Groups.objects.filter(course=course) #course.group_set.all()
+    groups = Group.objects.filter(course=course) #course.group_set.all()
     for group in groups:
         if pupil in group.pupils:
             lessons = Lesson.objects.filter(group=group)
@@ -319,4 +319,28 @@ def get_pupil_lessons(request, pupil_id, course_id):
     # template = ???
     return render(request, template, context)
 
-    
+
+def get_pupils_not_in_group(request, group_id):
+    context = {}
+    context['pupils'] = []
+    group = Group.objects.get(group_id)
+    pupils_in_group = group.pupils
+    pupils = Pupil.objects.all()
+    for pupil in pupils:
+        if pupil not in pupils_in_group:
+            context['pupils'].append(pupil)
+
+    # template = 'cabinet/add_pupil.html'
+    return render(request, template, context)
+
+
+def add_pupil_to_group(request, pupil_id, group_id):
+    context = {}
+    group = Group.objects.get(group_id)
+    pupil = Group.objects.get(pupil_id)
+    group.pupils.add(pupil)
+    course = group.course
+    course.pupils.add(pupil)
+
+    # template = ???
+    return render(request, template, context)

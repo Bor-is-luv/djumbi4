@@ -2,8 +2,24 @@ from django import forms
 
 from .models import *
 
+from django.core.exceptions import ValidationError
 
-class AddSolution(forms.Form):
+
+class UpdateUser(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['username', 'email']
+
+class UpdateGroup(forms.ModelForm):
+    pass
+
+class UpdateCourse(forms.ModelForm):
+    pass
+
+class UpdateLesson(forms.ModelForm):
+    pass
+
+class AddSolution(forms.ModelForm):
     class Meta:
         model = Course
         fields = ['solution']
@@ -65,3 +81,18 @@ class CreateLesson(forms.ModelForm):
         self.fields['group'].queryset = qs_groups
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+    def clean_number(self):
+        number = self.cleaned_data['number']
+
+        if number < 0:
+            raise ValidationError('Номер урока не может быть отрицательным')
+        else:
+            group = self.cleaned_data['group']
+            lessons = Lesson.objects.filter(group=group)
+            numbers = [lesson.number for lesson in lessons]
+            if number in numbers:
+                raise ValidationError('Урок с таким номером уже есть')
+            
+        return number
