@@ -8,16 +8,28 @@ from django.core.exceptions import ValidationError
 class UpdateUser(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = '['username', 'email']'
 
 class UpdateGroup(forms.ModelForm):
-    pass
+    class Meta:
+        model = Group
+        fields = '__all__'
 
 class UpdateCourse(forms.ModelForm):
-    pass
+    class Meta:
+        model = Course
+        fields = '__all__'
 
 class UpdateLesson(forms.ModelForm):
-    pass
+    class Meta:
+        model = Lesson
+        fields = '__all__'
+
+
+class UpdateSolution(forms.ModelForm):
+    class Meta:
+        model = Solution
+        fields = '__all__'
 
 class AddSolution(forms.ModelForm):
     class Meta:

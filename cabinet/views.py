@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -191,25 +191,40 @@ class DetailPupilView(DetailView, LoginRequiredMixin):
     template_name = 'cabinet/detail_pupil.html'
 
 
-class UpdateGroupView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_group'
     model = Group
+    form_class = UpdateGroup
     template_name = 'cabinet/update_group.html'
 
 
-class UpdateCourseView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+class UpdateCourseView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_course'
     model = Course
+    form_class = UpdateCourse
     template_name = 'cabinet/update_course.html'
 
 
-class UpdateLessonView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_lesson'
     model = Lesson
+    form_class = UpdateLesson
+    template_name = 'cabinet/update_lesson.html'
+
+class UpdateSolutionView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
+    permission_required = 'cabinet.change_solution'
+    model = Solution
+    form_class = UpdateSolution
     template_name = 'cabinet/update_lesson.html'
 
 
-class UpdateTeacherView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+class UpdateUserView(UpdateView, LoginRequiredMixin):
+    model = User
+    template_name = 'cabinet/update_user.html'
+    form_class = UpdateUser
+
+
+class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_teacher'
     model = Teacher
     template_name = 'cabinet/update_teacher.html'
@@ -221,7 +236,7 @@ class UpdateTeacherView(PermissionRequiredMixin, DetailView, LoginRequiredMixin)
     #        raise PermissionDenied
 
 
-class UpdatePupilView(PermissionRequiredMixin, DetailView, LoginRequiredMixin):
+class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_pupil'
     model = Pupil
     template_name = 'cabinet/update_pupil.html'
@@ -336,10 +351,11 @@ def get_pupils_not_in_group(request, group_id):
 def add_pupil_to_group(request, pupil_id, group_id):
     context = {}
     group = Group.objects.get(group_id)
-    pupil = Group.objects.get(pupil_id)
+    pupil = Pupil.objects.get(pupil_id)
     group.pupils.add(pupil)
     course = group.course
     course.pupils.add(pupil)
 
     # template = ???
+    # context is empty now
     return render(request, template, context)
