@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 class UpdateUser(forms.ModelForm):
     class Meta:
-        model = Course
+        model = User
         fields = ['username', 'email']
 
 class UpdateGroup(forms.ModelForm):
