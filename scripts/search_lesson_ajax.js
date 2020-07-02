@@ -1,5 +1,6 @@
 // TODO add the url to the lesson to bind it to the button
 function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
+
     // Create divs for the lesson
     let lesson_div = document.createElement('div');
     lesson_div.className = 'card-body border  d-flex flex-wrap flex-row justify-content-between';
@@ -12,12 +13,14 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
     lesson_name_div.className = 'text-center overflow-auto';
     lesson_name_div.innerHTML = lesson_name;
 
-    let lesson_fetch_button = document.createElement('button');
-    lesson_fetch_button.className = 'trigger a-button'
+    let lesson_fetch_button = document.createElement('a');
+    lesson_fetch_button.className = 'a-button'
+    fetch_url = fetch_url.slice(0, fetch_url.length - 2);
+    lesson_fetch_button.href = fetch_url + lesson_id;
     lesson_fetch_button.innerHTML = 'Посмотреть занятие'
-    lesson_fetch_button.onclick = function() {
-        fetch_lesson_ajax(fetch_url, lesson_id);
-    }
+    // lesson_fetch_button.onclick = function() {
+    //     fetch_lesson_ajax(fetch_url, lesson_id);
+    // }
 
     // Construct the node tree
     lesson_div.append(lesson_number_div);
@@ -30,9 +33,9 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
 // course name for the element to be appended to
 async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
     // A lesson name to find
-    keywords = document.getElementById('search_input').value;
+    keywords = document.getElementById('search_input_' + course_name).value;
     // Clear the search field
-    document.getElementById('search_input').value = '';
+    document.getElementById('search_input_' + course_name).value = '';
 
     // Le csrf
     csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
@@ -62,7 +65,7 @@ async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
 
         // Clear all the lessons without deleting the search bar
         while (node_to_be_appended_to.lastChild) {
-            if (node_to_be_appended_to.lastChild == document.getElementById('search_div')) {
+            if (node_to_be_appended_to.lastChild == document.getElementById('search_div_' + course_name)) {
                 break;
             }
             node_to_be_appended_to.removeChild(node_to_be_appended_to.lastChild);

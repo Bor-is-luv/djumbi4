@@ -118,42 +118,22 @@
       <div class="card-header" id="{{course.id}}">
         <h2 class="mb-0">
           <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#{{course.name}}"
-            aria-expanded="false" aria-controls="{{course.name}}" onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')">
+            aria-expanded="false" aria-controls="{{course.name}}" onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
             {{course.name}}
           </button>
         </h2>
       </div>
       <div id="{{course.name}}" class="collapse" aria-labelledby="{{course.id}}" data-parent="#accordionLessons">
-        <div id="search_div" class="card-body lesson-search border">
+        <div id="search_div_{{course.name}}" class="card-body lesson-search border">
           <h5>
             Поиск по урокам
           </h5>
             {% csrf_token %}
-            <input id="search_input" class="form-control mr-sm-2" type="search" placeholder="Введите название темы" aria-label="Search" />
-            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'fetch_lesson_ajax_url' %}')" id="search_button" class="my-2 my-sm-0 a-button">
+            <input id="search_input_{{course.name}}" class="form-control mr-sm-2" type="search" placeholder="Введите название темы" aria-label="Search" />
+            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')" id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
               Поиск
             </button>
         </div>
-        <!-- Успех или неудачу отмечать css классами bg-success, bg-danger, bg-warning, bg-light -->
-        <!-- LESSONS -->
-        <!-- {% for lesson in lessons %}
-        <div class="card-body border  d-flex flex-wrap flex-row justify-content-between {% if user_type == 'pupil' %} text-white
-            {% if lesson.homework_solution == None %} bg-danger {% endif %}
-            {% if lesson.homework_solution != None %} bg-success {% endif %}
-          {% endif %}">
-          <div class="lesson-number font-weight-bold">
-            № {{lesson.number}}
-          </div>
-          <div class="text-center overflow-auto">
-            {{lesson.name}}
-          </div>
-          <button class="trigger"
-          onclick="fetch_lesson_ajax('{% url 'fetch_lesson_ajax_url' %}', {{lesson.pk}}, {{course.pk}}, {{user.pk}})"
-            >
-            Посмотреть занятие
-          </button>
-        </div>
-        {% endfor %} -->
       </div>
     </div>
     {% endfor %}
