@@ -27,41 +27,27 @@ a:hover {
     text-decoration: none;
 }
 
-.logo-pic {
+/* .logo-pic {
     width: 20%;
     height: 5%;
     justify-self: flex-start;
 }
-
+ */
 
 @media (min-width: 576px) {
     .logo-pic {
-        width: 30%;
-        height: 30%;
+        width: 25%;
+        height: 25%;
     
     }
-
-    .quit-button {
-        background: #f8f9fa;
-        color: #0f45c7;
-        font-size: 13px;
-    }
-
 }
 
 @media (min-width: 768px) {
     .logo-pic {
-        width: 30%;
-        height: 30%;
+        width: 25%;
+        height: 25%;
     
     }
-
-    .quit-button {
-        background: #f8f9fa;
-        color: #0f45c7;
-        font-size: 15px;
-    }
-    
 }
 
 @media (min-width: 992px) {
@@ -70,14 +56,8 @@ a:hover {
     }
     
     .logo-pic {
-        width: 25%;
-        height: 25%;
-    }
-
-    .quit-button {
-        background: #f8f9fa;
-        color: #0f45c7;
-        font-size: 20px;
+        width: 20%;
+        height: 20%;
     }
 }
 
@@ -87,17 +67,10 @@ a:hover {
     }
 
     .logo-pic {
-        width: 20%;
-        height: 20%;
+        width: 18%;
+        height: 15%;
     
     }
-
-    .quit-button {
-        background: #f8f9fa;
-        color: #0f45c7;
-        font-size: 23px;
-    }
-    
 }
 
 /* form {
@@ -147,4 +120,18 @@ a:hover {
 
 .detail-lesson-card {
     margin-top: 24px;
+}
+
+.search-input-class {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.pupil-table-col {
+    margin-top: 24px;
+}
+
+.navbar-a {
+    font-weight: 700;
+    font-size: large;
 }
