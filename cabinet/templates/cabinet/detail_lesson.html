@@ -1,11 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Detail group</title>
-</head>
-<body>
-<div><a href="{% url 'cabinet_page' %}"> cabinet </a></div>
-{{ lesson }}
-</body>
-</html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Урок {{ lesson.number }} {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
+<a class="navbar-brand" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6 col-md-7 col-lg-6 col-xl-6">
+            <div class="card mb-4 shadow detail-lesson-card">
+                <h5 class="card-header">Информация об уроке</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Номер</h5>
+                    <p class="card-text">
+                        {{lesson.number}}
+                    </p>
+                    <h5 class="card-title">Название</h5>
+                    <p class="card-text">
+                        {{lesson.name}}
+                    </p>
+                    <h5 class="card-title">Материалы</h5>
+                    <p class="card-text">
+                        {{lesson.materials}}
+                    </p>
+                    <h5 class="card-title">Домашнее задание</h5>
+                    <p class="card-text">
+                        {{lesson.homework_task}}
+                    </p>
+                    <!-- <a class="a-button" href="#">Редактировать</a> -->
+                </div>
+            </div>
+        </div>
+        {% if user_type == 'teacher' %}
+        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
+            <div class="list-group">
+                {% for solution in homework %}
+                <li class="list-group-item">
+                    Ученик {{solution.pupil}}
+                    Статус {{solution.done}}
+                    Работа {{solution.homework_solution}}
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        {% if user_type == 'pupil' %}
+        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
+            <form id="lesson_form" method="post">
+                {%  csrf_token %}
+                Домашнее задание
+                {{ form }}
+                <button form="add_form" type="submit" class="a-reverse-button">Add</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

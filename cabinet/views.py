@@ -152,12 +152,14 @@ def detail_lesson_view(request, lesson_id):
     ctx = get_user_ctx(request)
     context = {}
     lesson = Lesson.objects.get(id=lesson_id)
+    context['lesson'] = lesson
+    context['user_type'] = ctx['user_type']
     if ctx['user_type'] == 'pupil':
         context['homework'] = Solution.objects.filter(
-            lesson=lesson, pupil=ctx['pupil'])
+            lesson=lesson, pupil_id=ctx['user'].id)
     elif ctx['user_type'] == 'teacher':
         context['homework'] = Solution.objects.filter(
-            lesson=lesson, teacher=ctx['teacher'])
+            lesson=lesson)
 
     if request.method == 'POST' and ctx['user_type'] == 'pupil':
         form = AddSolution(request.POST, request.FILES)
@@ -167,8 +169,10 @@ def detail_lesson_view(request, lesson_id):
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()
 
-    context['form'] = form
-    return render(request, 'cabinet/detail_pupil.html', context)
+    if ctx['user_type'] == 'pupil':
+        context['form'] = form
+    
+    return render(request, 'cabinet/detail_lesson.html', context)
 
 
 class DetailGroupView(DetailView, LoginRequiredMixin):
