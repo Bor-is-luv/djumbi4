@@ -21,8 +21,8 @@ class UpdateLesson(forms.ModelForm):
 
 class AddSolution(forms.ModelForm):
     class Meta:
-        model = Course
-        fields = ['solution']
+        model = Solution
+        fields = ['homework_solution']
 
 class CreateGroup(forms.ModelForm):
     class Meta:

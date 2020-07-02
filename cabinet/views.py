@@ -160,7 +160,6 @@ def detail_lesson_view(request, lesson_id):
     elif ctx['user_type'] == 'teacher':
         context['homework'] = Solution.objects.filter(
             lesson=lesson)
-
     if request.method == 'POST' and ctx['user_type'] == 'pupil':
         form = AddSolution(request.POST, request.FILES)
         if form.is_valid():
