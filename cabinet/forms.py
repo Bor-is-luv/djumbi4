@@ -3,10 +3,10 @@ from django import forms
 from .models import *
 
 
-class AddSolution(forms.Form):
+class AddSolution(forms.ModelForm):
     class Meta:
-        model = Course
-        fields = ['solution']
+        model = Solution
+        fields = ['homework_solution']
 
 class CreateGroup(forms.ModelForm):
     class Meta:
