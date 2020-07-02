@@ -10,11 +10,11 @@
 
 <!--NAVBAR-->
 {% block navbar %}
-<a class="navbar-brand" href="#">Личный кабинет</a>
-<a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
-<a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
+<a class="navbar-brand navbar-a" href="#">Личный кабинет</a>
+<!-- <a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a> -->
+<!-- <a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a> -->
 <!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
-<a class="quit a-button" href="{% url 'logout_page' %}">Выход</a>
+<a class="quit navbar-a a-button" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
 
 {% block content %}
@@ -69,7 +69,10 @@
             <p class="card-text d-flex ">
               {% for group in groups %}
               {{group}}
-              {% endfor %}
+            <div class="d-flex">
+              <a class="a-button" href="{% url 'detail_group_page' group.id %}"> Посмотреть </a>
+            </div>
+            {% endfor %}
             </p>
           </div>
         </div>
@@ -117,8 +120,9 @@
     <div class="card mb-3 shadow">
       <div class="card-header" id="{{course.id}}">
         <h2 class="mb-0">
-          <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse" data-target="#{{course.name}}"
-            aria-expanded="false" aria-controls="{{course.name}}" onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
+          <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
+            data-target="#{{course.name}}" aria-expanded="false" aria-controls="{{course.name}}"
+            onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
             {{course.name}}
           </button>
         </h2>
@@ -128,11 +132,14 @@
           <h5>
             Поиск по урокам
           </h5>
-            {% csrf_token %}
-            <input id="search_input_{{course.name}}" class="form-control mr-sm-2" type="search" placeholder="Введите название темы" aria-label="Search" />
-            <button onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')" id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
-              Поиск
-            </button>
+          {% csrf_token %}
+          <input id="search_input_{{course.name}}" class="search-input-class form-control mr-sm-2" type="search"
+            placeholder="Введите название темы" aria-label="Search" />
+          <button
+            onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
+            id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
+            Поиск
+          </button>
         </div>
       </div>
     </div>
