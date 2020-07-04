@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 class UpdateUser(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email']
+        fields = '__all__'
 
 class UpdateGroup(forms.ModelForm):
     class Meta:
@@ -25,6 +25,15 @@ class UpdateLesson(forms.ModelForm):
         model = Lesson
         fields = '__all__'
 
+class UpdateTeacher(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = '__all__'
+
+class UpdatePupil(forms.ModelForm):
+    class Meta:
+        model = Pupil
+        fields = '__all__'
 
 class UpdateSolution(forms.ModelForm):
     class Meta:

@@ -110,10 +110,10 @@ class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin)
             # change_course = Permission.objects.get(codename='change_course')
             delete_teacher = Permission.objects.get(codename='delete_teacher')
             add_teacher = Permission.objects.get(codename='add_teacher')
-            change_teacher = Permission.objects.get(codename='change_teacher')
+            # change_teacher = Permission.objects.get(codename='change_teacher')
             user.user_permissions.remove(delete_course, add_course, # change_course,
-                                         delete_teacher, add_teacher,
-                                         change_teacher)
+                                         delete_teacher, add_teacher)
+                                         # change_teacher)
             user.save()
             pupil.delete()
             return super().form_valid(form)
@@ -196,6 +196,7 @@ class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     model = Group
     form_class = UpdateGroup
     template_name = 'cabinet/update_group.html'
+    success_url = '/cabinet/'
 
 
 class UpdateCourseView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
@@ -203,6 +204,7 @@ class UpdateCourseView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     model = Course
     form_class = UpdateCourse
     template_name = 'cabinet/update_course.html'
+    success_url = '/cabinet/'
 
 
 class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
@@ -210,25 +212,29 @@ class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     model = Lesson
     form_class = UpdateLesson
     template_name = 'cabinet/update_lesson.html'
+    success_url = '/cabinet/'
 
 class UpdateSolutionView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_solution'
     model = Solution
     form_class = UpdateSolution
     template_name = 'cabinet/update_lesson.html'
+    success_url = '/cabinet/'
 
 
 class UpdateUserView(UpdateView, LoginRequiredMixin):
     model = User
     template_name = 'cabinet/update_user.html'
     form_class = UpdateUser
+    success_url = '/cabinet/'
 
 
 class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_teacher'
     model = Teacher
+    form_class = UpdateTeacher
     template_name = 'cabinet/update_teacher.html'
-
+    success_url = '/cabinet/'
     # def form_valid(self, form):
     #    if self.request.user.is_staff:
     #        return super().form_valid(form)
@@ -239,8 +245,9 @@ class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin)
 class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_pupil'
     model = Pupil
+    form_class = UpdatePupil
     template_name = 'cabinet/update_pupil.html'
-
+    success_url = '/cabinet/'
 
 # AJAX
 
