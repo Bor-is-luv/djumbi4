@@ -15,10 +15,23 @@ class UpdateGroup(forms.ModelForm):
         model = Group
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        if 'obj' in kwargs and kwargs['obj'] is not None:
+            group = kwargs['obj']
+            course = group.course
+            qs_pupils = course.pupils.all()
+        super().__init__(*args, **kwargs)
+        self.fields['pupils'].queryset = qs_pupils
+
 class UpdateCourse(forms.ModelForm):
     class Meta:
         model = Course
         fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        qs_pupils = Pupils.objects.all()
+        super().__init__(*args, **kwargs)
+        self.fields['pupils'].queryset = qs_pupils
 
 class UpdateLesson(forms.ModelForm):
     class Meta:

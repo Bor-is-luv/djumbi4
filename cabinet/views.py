@@ -197,6 +197,11 @@ class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     form_class = UpdateGroup
     template_name = 'cabinet/update_group.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(UpdateGroupView, self).get_form_kwargs()
+        kwargs['obj'] = self.object
+        return kwargs
+
 
 class UpdateCourseView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_course'
