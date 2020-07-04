@@ -53,10 +53,24 @@ class UpdateSolution(forms.ModelForm):
         model = Solution
         fields = '__all__'
 
+
+
 class AddSolution(forms.ModelForm):
     class Meta:
         model = Solution
-        fields = ['homework_solution']
+        fields = ['__all__']
+
+    def __init__(self, *args, **kwargs):
+        if 'lesson' in kwargs and kwargs['lesson'] is not None:
+            lesson = kwargs['lesson']
+
+        if 'pupil' in kwargs and kwargs['pupil'] is not None:
+            pupil = kwargs['pupil']
+
+        super().__init__(*args, **kwargs)
+        self.fields['pupil'].initial = pupil
+        self.fields['lesson'].initial = lesson
+        self.fields['done'].initial = False
 
 class CreateGroup(forms.ModelForm):
     class Meta:

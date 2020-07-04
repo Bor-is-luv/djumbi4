@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
-
+from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
@@ -161,7 +161,7 @@ def detail_lesson_view(request, lesson_id):
         context['homework'] = Solution.objects.filter(
             lesson=lesson)
     if request.method == 'POST' and ctx['user_type'] == 'pupil':
-        form = AddSolution(request.POST, request.FILES)
+        form = AddSolution(request.POST, request.FILES, pupil=ctx['user'], lesson=lesson)
         if form.is_valid():
             # file is saved
             form.save()
@@ -204,12 +204,18 @@ class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
         return kwargs
 
 
-class UpdateCourseView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
-    permission_required = 'cabinet.change_course'
+class UpdateCourseView(UpdateView, LoginRequiredMixin):
+    # permission_required = 'cabinet.change_course'
     model = Course
     form_class = UpdateCourse
     template_name = 'cabinet/update_course.html'
     success_url = '/cabinet/'
+
+    def form_valid(self, form):
+        if self.request.user.is_staff:
+            return super().form_valid(form)
+        else:
+           raise PermissionDenied
 
 
 class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
@@ -371,3 +377,8 @@ def add_pupil_to_group(request, pupil_id, group_id):
     # template = ???
     # context is empty now
     return render(request, template, context)
+
+
+class ListCourseView(ListView):
+    template_name = 'cabinet/view_courses.html'
+    context_object_name = 'courses'
