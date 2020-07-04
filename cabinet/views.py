@@ -107,11 +107,11 @@ class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin)
             user.save()
             delete_course = Permission.objects.get(codename='delete_course')
             add_course = Permission.objects.get(codename='add_course')
-            change_course = Permission.objects.get(codename='change_course')
+            # change_course = Permission.objects.get(codename='change_course')
             delete_teacher = Permission.objects.get(codename='delete_teacher')
             add_teacher = Permission.objects.get(codename='add_teacher')
             change_teacher = Permission.objects.get(codename='change_teacher')
-            user.user_permissions.remove(delete_course, add_course, change_course,
+            user.user_permissions.remove(delete_course, add_course, # change_course,
                                          delete_teacher, add_teacher,
                                          change_teacher)
             user.save()
@@ -123,7 +123,7 @@ class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin)
 
 class CreateLessonView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
     permission_required = 'cabinet.add_lesson'
-    model = Teacher
+    model = Lesson
     template_name = 'cabinet/create_lesson.html'
     form_class = CreateLesson
     success_url = reverse_lazy('cabinet_page')
