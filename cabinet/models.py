@@ -29,8 +29,8 @@ class Teacher(models.Model):
 
 
 class Course(models.Model):
-    pupils = models.ManyToManyField(Pupil, blank=True, null=True, , verbose_name='Ученики')
-    teachers = models.ManyToManyField(Teacher, blank=True, null=True, , verbose_name='Учителя')
+    pupils = models.ManyToManyField(Pupil, blank=True, null=True, verbose_name='Ученики')
+    teachers = models.ManyToManyField(Teacher, blank=True, null=True, verbose_name='Учителя')
 
     name = models.CharField('Название', max_length=50)
     hours = models.IntegerField('Количество часов', blank=True, null=True, default=0)
@@ -52,10 +52,10 @@ class Group(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING,
                                 verbose_name='Учитель', blank=True, null=True)
     pupils = models.ManyToManyField(Pupil, verbose_name='Ученики')
-    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING)
+    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING, verbose_name='Курс')
 
     name = models.CharField('Название', max_length=20)
-    time = models.CharField('Время пррведения занятия', max_length=20, blank=True, null=True)
+    time = models.CharField('Время проведения занятия', max_length=20, blank=True, null=True)
     day = models.CharField('День занятия', blank=True, null=True, max_length=12)
     active = models.BooleanField(default=False)
 
