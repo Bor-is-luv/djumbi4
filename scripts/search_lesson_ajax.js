@@ -31,18 +31,18 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
 }
 
 // course name for the element to be appended to
-async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
+async function search_lesson_ajax(course_id, user_id, url, fetch_url) {
     // A lesson name to find
-    keywords = document.getElementById('search_input_' + course_name).value;
+    keywords = document.getElementById('search_input_' + course_id).value;
     // Clear the search field
-    document.getElementById('search_input_' + course_name).value = '';
+    document.getElementById('search_input_' + course_id).value = '';
 
     // Le csrf
     csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 
     // This will go to the server
     content = {
-        'keywords': keywords, 'course_name': course_name,
+        'keywords': keywords, 'course_id': course_id,
         'user_id': user_id
     };
 
@@ -61,11 +61,11 @@ async function search_lesson_ajax(course_name, user_id, url, fetch_url) {
         let json = await fetched_response.json();
 
         // Node of the specific course
-        let node_to_be_appended_to = document.getElementById(course_name);
+        let node_to_be_appended_to = document.getElementById('course_' + course_id);
 
         // Clear all the lessons without deleting the search bar
         while (node_to_be_appended_to.lastChild) {
-            if (node_to_be_appended_to.lastChild == document.getElementById('search_div_' + course_name)) {
+            if (node_to_be_appended_to.lastChild == document.getElementById('search_div_' + course_id)) {
                 break;
             }
             node_to_be_appended_to.removeChild(node_to_be_appended_to.lastChild);
