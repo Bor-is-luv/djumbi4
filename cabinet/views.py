@@ -103,7 +103,7 @@ class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin)
             user = self.object.user
             pupil = Pupil.objects.get(user=user)
             user.user_permissions.set(
-                Permission.objects.filter(content_type_id__gte=25))
+                Permission.objects.filter(content_type_id__gte=7))
             user.save()
             delete_course = Permission.objects.get(codename='delete_course')
             add_course = Permission.objects.get(codename='add_course')
