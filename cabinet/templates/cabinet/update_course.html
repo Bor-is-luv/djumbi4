@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Редактирование {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
+<a class="navbar-brand" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container form-holder">
+    <form id="update_form" method="post">
+    <h2>Редактирование курса</h2>
+        {% csrf_token %}
+        
+        {{form}}
+        <button form="update_form" type="submit" class="a-reverse-button mt-3">
+          Подтвердить
+        </button>
+      </form>
+</div>
+
+{% endblock %}
+
