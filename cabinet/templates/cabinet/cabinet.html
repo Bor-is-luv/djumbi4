@@ -35,8 +35,8 @@
         <div class="card-body">
           <h5 class="card-title">ФИО</h5>
           <p class="card-text">
-            {{request.user.first_name}}
-            {{request.user.last_name}}
+            {{user.user.first_name}}
+            {{user.user.last_name}}
           </p>
           {% if user_type == 'teacher' %}
           <h5 class="card-title">Телефон</h5>
@@ -48,7 +48,12 @@
             {{user.info}}
           </p>
           {% endif %}
-          <a class="a-button" href="#">Редактировать</a>
+          {% if user_type == 'teacher' %}
+          <a class="a-button" href="{% url 'update_user_page' user.user.id %}">Редактировать</a>
+          {% endif %}
+          {% if user_type == 'pupil' %}
+          <a class="a-button" href="{% url 'update_user_page' user.user.id %}">Редактировать</a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -61,7 +66,9 @@
             {% for course in courses %}
             <h5 class="card-title">Курсы</h5>
             <p class="card-text d-flex ">{{course.name}}</p>
+            {% if user_type == 'teacher' %}
             <a class="a-button" href="{% url 'update_course_page' course.id %}">  Редактировать </a>
+            {% endif %}
             <h5 class="card-title">Группы</h5>
             <p class="card-text d-flex ">
               {% for group in groups %}
@@ -112,26 +119,26 @@
       <!-- КУРС 1 -->
       {% for course in courses %}
       <div class="card mb-3 shadow">
-        <div class="card-header" id="{{course.id}}">
+        <div class="card-header" id="{{course.name}}">
           <h2 class="mb-0">
             <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
-              data-target="#{{course.name}}" aria-expanded="false" aria-controls="{{course.name}}"
-              onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
+              data-target="#course_{{course.id}}" aria-expanded="false" aria-controls="course_{{course.id}}"
+              onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
               {{course.name}}
             </button>
           </h2>
         </div>
-        <div id="{{course.name}}" class="collapse" aria-labelledby="{{course.id}}" data-parent="#accordionLessons">
-          <div id="search_div_{{course.name}}" class="card-body lesson-search border">
+        <div id="course_{{course.id}}" class="collapse" aria-labelledby="course_{{course.id}}" data-parent="#accordionLessons">
+          <div id="search_div_{{course.id}}" class="card-body lesson-search border">
             <h5>
               Поиск по урокам
             </h5>
             {% csrf_token %}
-            <input id="search_input_{{course.name}}" class="search-input-class form-control mr-sm-2" type="search"
+            <input id="search_input_{{course.id}}" class="search-input-class form-control mr-sm-2" type="search"
               placeholder="Введите название темы" aria-label="Search" />
             <button
-              onclick="search_lesson_ajax('{{course.name}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
-              id="search_button_{{course_name}}" class="my-2 my-sm-0 a-button">
+              onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
+              id="search_button_{{course.id}}" class="my-2 my-sm-0 a-button">
               Поиск
             </button>
           </div>

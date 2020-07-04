@@ -13,9 +13,14 @@
 {% block content %}
 <div class="container form-holder">
     <form id="update_form" method="post">
-    <h2>Редактирование курса</h2>
+    <h2>Редактирование пользователя</h2>
         {% csrf_token %}
-        {{form}}
+        <p>Имя</p>
+        {{form.first_name}}
+        <p>Фамилия</p>
+        {{form.last_name}}
+        <p>Почта</p>
+        {{form.email}}
         <button form="update_form" type="submit" class="a-reverse-button mt-3">
           Подтвердить
         </button>

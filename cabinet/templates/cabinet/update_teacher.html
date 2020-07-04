@@ -15,7 +15,12 @@
     <form id="update_form" method="post">
     <h2>Редактирование курса</h2>
         {% csrf_token %}
-        {{form}}
+        <p>Фотография</p>
+        {{form.image}}
+        <p>Информация</p>
+        {{form.info}}
+        <p>Телефон</p>
+        {{form.phone_number}}
         <button form="update_form" type="submit" class="a-reverse-button mt-3">
           Подтвердить
         </button>
