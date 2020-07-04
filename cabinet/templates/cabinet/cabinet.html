@@ -35,8 +35,8 @@
         <div class="card-body">
           <h5 class="card-title">ФИО</h5>
           <p class="card-text">
-            {{request.user.first_name}}
-            {{request.user.last_name}}
+            {{user.user.first_name}}
+            {{user.user.last_name}}
           </p>
           {% if user_type == 'teacher' %}
           <h5 class="card-title">Телефон</h5>

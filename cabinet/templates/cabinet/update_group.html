@@ -15,14 +15,15 @@
     <form id="update_form" method="post">
     <h2>Редактирование группы</h2>
         {% csrf_token %}
-        <p>Название</p>
+        <!-- <p>Название</p>
         {{form.name}}
         <p>День</p>
         {{form.day}}
         <p>Время</p>
         {{form.time}}
         <p>Ученики</p>
-        {{form.pupils}}
+        {{form.pupils}} -->
+        {{form}}
         <button form="update_form" type="submit" class="a-reverse-button mt-3">
           Подтвердить
         </button>
