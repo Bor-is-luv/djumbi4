@@ -58,9 +58,12 @@ class UpdateSolution(forms.ModelForm):
 class AddSolution(forms.ModelForm):
     class Meta:
         model = Solution
-        fields = ['__all__']
+        fields = '__all__'
+        default_data = {''}
 
     def __init__(self, *args, **kwargs):
+        lesson = 'ы'
+        pupil = 'ы'
         if 'lesson' in kwargs and kwargs['lesson'] is not None:
             lesson = kwargs['lesson']
 
