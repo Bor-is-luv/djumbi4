@@ -13,7 +13,7 @@ class UpdateUser(forms.ModelForm):
 class UpdateGroup(forms.ModelForm):
     class Meta:
         model = Group
-        fields = '__all__'
+        exclude = ('teacher',)
 
     def __init__(self, *args, **kwargs):
         if 'obj' in kwargs and kwargs['obj'] is not None:
