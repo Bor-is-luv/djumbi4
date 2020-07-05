@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 class Pupil(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return f'{self.user.username}'
@@ -14,7 +14,7 @@ class Pupil(models.Model):
 
 
 class Teacher(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
     image = models.ImageField('Фотография', blank=True, null=True)
     info = models.TextField('Информация', blank=True, null=True)

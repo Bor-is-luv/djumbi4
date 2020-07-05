@@ -79,19 +79,19 @@ class CreateCourseView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
     form_class = CreateCourse
     success_url = reverse_lazy('cabinet_page')
 
-    # def form_valid(self, form):
-    #    if self.request.user.is_staff:
-    #        return super().form_valid(form)
-    #    else:
-    #       raise PermissionDenied
+    def form_valid(self, form):
+        if self.request.user.is_staff:
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied
 
 
-class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
+class CreateTeacherView(CreateView, LoginRequiredMixin):
 
     response_data = {'status': 'ok'}
     # pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
 
-    permission_required = 'cabinet.add_teacher'
+    # permission_required = 'cabinet.add_teacher'
     model = Teacher
     template_name = 'cabinet/create_teacher.html'
     form_class = CreateTeacher

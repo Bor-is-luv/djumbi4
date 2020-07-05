@@ -29,7 +29,7 @@ class UpdateCourse(forms.ModelForm):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        qs_pupils = Pupils.objects.all()
+        qs_pupils = Pupil.objects.all()
         super().__init__(*args, **kwargs)
         self.fields['pupils'].queryset = qs_pupils
 
