@@ -111,9 +111,9 @@ class CreateTeacherView(PermissionRequiredMixin, CreateView, LoginRequiredMixin)
             delete_teacher = Permission.objects.get(codename='delete_teacher')
             add_teacher = Permission.objects.get(codename='add_teacher')
             # change_teacher = Permission.objects.get(codename='change_teacher')
-            user.user_permissions.remove(delete_course, add_course, # change_course,
+            user.user_permissions.remove(delete_course, add_course,  # change_course,
                                          delete_teacher, add_teacher)
-                                         # change_teacher)
+            # change_teacher)
             user.save()
             pupil.delete()
             return super().form_valid(form)
@@ -153,8 +153,10 @@ def detail_lesson_view(request, lesson_id):
     ctx = get_user_ctx(request)
     context = {}
     lesson = Lesson.objects.get(id=lesson_id)
+
     context['lesson'] = lesson
     context['user_type'] = ctx['user_type']
+
     if ctx['user_type'] == 'pupil':
         context['homework'] = Solution.objects.filter(
             lesson=lesson, pupil_id=ctx['user'].id)
@@ -162,16 +164,21 @@ def detail_lesson_view(request, lesson_id):
         context['homework'] = Solution.objects.filter(
             lesson=lesson)
     if request.method == 'POST' and ctx['user_type'] == 'pupil':
-        form = AddSolution(request.POST, request.FILES, pupil=ctx['user'], lesson=lesson)
+        form = AddSolution(request.POST, request.FILES)
         if form.is_valid():
-            # file is saved
-            form.save()
+            pupil = Pupil.objects.get(id=ctx['user'].id)
+            lesson = Lesson.objects.get(id=lesson_id)
+
+            solution = Solution.objects.create(
+                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+            # form.save()
+
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()
 
     if ctx['user_type'] == 'pupil':
         context['form'] = form
-    
+
     return render(request, 'cabinet/detail_lesson.html', context)
 
 
@@ -216,7 +223,7 @@ class UpdateCourseView(UpdateView, LoginRequiredMixin):
         if self.request.user.is_staff:
             return super().form_valid(form)
         else:
-           raise PermissionDenied
+            raise PermissionDenied
 
 
 class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
@@ -225,6 +232,7 @@ class UpdateLessonView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     form_class = UpdateLesson
     template_name = 'cabinet/update_lesson.html'
     success_url = '/cabinet/'
+
 
 class UpdateSolutionView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_solution'
@@ -264,6 +272,8 @@ class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
 # AJAX
 
 # lesson_id, course_id, user_id
+
+
 def fetch_lesson_ajax(request):
     response_data = {'status': 'ok'}
 
@@ -299,13 +309,14 @@ def search_lesson_ajax(request):
     try:
         user = Pupil.objects.get(pk=request_data['user_id'])
         course = Course.objects.get(pk=request_data['course_id'])
-        groups = Group.objects.filter(course_id=course.id) # <--- CHECK IT!!!
+        groups = Group.objects.filter(course_id=course.id)  # <--- CHECK IT!!!
         for group in groups:
             if pupil in group.pupils:
                 lessons = Lesson.objects.filter(group_id=group.id)
                 if (request_data['keywords']) is not '':
-                    lessons = lessons.filter(name__icontains=request_data['keywords'])
-                for lesson in lessons:                        
+                    lessons = lessons.filter(
+                        name__icontains=request_data['keywords'])
+                for lesson in lessons:
                     response_data['lesson_name'].append(lesson.name)
                     response_data['lesson_number'].append(lesson.number)
                     response_data['lesson_id'].append(lesson.id)
@@ -313,18 +324,19 @@ def search_lesson_ajax(request):
         try:
             course = Course.objects.get(pk=request_data['course_id'])
             user = Teacher.objects.get(pk=request_data['user_id'])
-            groups = Group.objects.filter(teacher_id=user.id, course_id=course.id)
+            groups = Group.objects.filter(
+                teacher_id=user.id, course_id=course.id)
             for group in groups:
                 lessons = Lesson.objects.filter(group_id=group.id)
                 if (request_data['keywords']) is not '':
                     lessons = lessons.filter(
-                    name__icontains=request_data['keywords'])
+                        name__icontains=request_data['keywords'])
                 for lesson in lessons:
                     response_data['lesson_name'].append(lesson.name)
                     response_data['lesson_number'].append(lesson.number)
                     response_data['lesson_id'].append(lesson.id)
         except:
-                print('yo')
+            print('yo')
         # find the user, then find the course, then finally find the group
         # and the lesson from that group
 
@@ -337,17 +349,17 @@ def search_lesson_ajax(request):
 
     return response
 
+
 def get_pupil_lessons(request, pupil_id, course_id):
     context = {}
     context['lessons'] = []
     pupil = Pupil.objects.get(pupil_id)
     course = Course.objects.get(course_id)
-    groups = Group.objects.filter(course=course) #course.group_set.all()
+    groups = Group.objects.filter(course=course)  # course.group_set.all()
     for group in groups:
         if pupil in group.pupils:
             lessons = Lesson.objects.filter(group=group)
             context['lessons'].extend(lessons)
-
 
     # template = ???
     return render(request, template, context)

@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 class UpdateUser(forms.ModelForm):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['first_name', 'last_name', 'email']
 
 class UpdateGroup(forms.ModelForm):
     class Meta:
@@ -51,29 +51,27 @@ class UpdatePupil(forms.ModelForm):
 class UpdateSolution(forms.ModelForm):
     class Meta:
         model = Solution
-        fields = '__all__'
+        fields = ['homework_solution']
 
 
 
-class AddSolution(forms.ModelForm):
-    class Meta:
-        model = Solution
-        fields = '__all__'
-        default_data = {''}
+class AddSolution(forms.Form):
+    homework_solution = forms.FileField(label="Домашняя работа")
+        # default_data = {''}
 
-    def __init__(self, *args, **kwargs):
-        lesson = 'ы'
-        pupil = 'ы'
-        if 'lesson' in kwargs and kwargs['lesson'] is not None:
-            lesson = kwargs['lesson']
+    # def __init__(self, *args, **kwargs):
+    #     lesson = 'ы'
+    #     pupil = 'ы'
+    #     if 'lesson' in kwargs and kwargs['lesson'] is not None:
+    #         lesson = kwargs['lesson']
 
-        if 'pupil' in kwargs and kwargs['pupil'] is not None:
-            pupil = kwargs['pupil']
+    #     if 'pupil' in kwargs and kwargs['pupil'] is not None:
+    #         pupil = kwargs['pupil']
 
-        super().__init__(*args, **kwargs)
-        self.fields['pupil'].initial = pupil
-        self.fields['lesson'].initial = lesson
-        self.fields['done'].initial = False
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['pupil'].initial = pupil
+    #     self.fields['lesson'].initial = lesson
+    #     self.fields['done'].initial = False
 
 class CreateGroup(forms.ModelForm):
     class Meta:

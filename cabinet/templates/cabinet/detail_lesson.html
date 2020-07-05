@@ -52,7 +52,7 @@
         {% endif %}
         {% if user_type == 'pupil' %}
         <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
-            <form id="lesson_form" method="post">
+            <form id="lesson_form" method="POST" enctype="multipart/form-data">
                 {%  csrf_token %}
                 Домашнее задание
                 {{ form }}
