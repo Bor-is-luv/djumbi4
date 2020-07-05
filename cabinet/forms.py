@@ -3,12 +3,28 @@ from django import forms
 from .models import *
 
 from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied
 
 
 class UpdateUser(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name']
+
+    def __init__(self, *args, **kwargs):
+        if 'obj' in kwargs and kwargs['obj'] is not None:
+            obj = kwargs['obj']
+            kwargs.pop('obj')
+
+        if 'user' in kwargs and kwargs['user'] is not None:
+            user = kwargs['user']
+            kwargs.pop('user')
+
+        if user != obj:
+            raise PermissionDenied
+
+        super().__init__(*args, **kwargs)
+
 
 class UpdateGroup(forms.ModelForm):
     class Meta:

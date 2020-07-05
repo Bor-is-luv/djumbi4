@@ -270,6 +270,12 @@ class UpdateUserView(UpdateView, LoginRequiredMixin):
         else:
             return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super(UpdateUserView, self).get_form_kwargs()
+        kwargs['obj'] = self.object
+        kwargs['user'] = self.request.user
+        return kwargs
+
 
 class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_teacher'
