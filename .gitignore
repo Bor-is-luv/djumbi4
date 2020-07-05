@@ -5,3 +5,5 @@ db.sqlite3
 cabinet/migrations/__pycache__
 */migrations/__pycache__
 */*/__pycache__/*
+media
+media/*
