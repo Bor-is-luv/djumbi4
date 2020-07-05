@@ -56,10 +56,10 @@ class UpdateLesson(forms.ModelForm):
         model = Lesson
         fields = '__all__'
 
-class UpdateTeacher(forms.ModelForm):
-    class Meta:
-        model = Teacher
-        fields = '__all__'
+class UpdateTeacher(forms.Form):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+    image = forms.ImageField()
 
 class UpdatePupil(forms.ModelForm):
     class Meta:
@@ -70,8 +70,6 @@ class UpdateSolution(forms.ModelForm):
     class Meta:
         model = Solution
         fields = ['homework_solution']
-
-
 
 class AddSolution(forms.Form):
     homework_solution = forms.FileField(label="Домашняя работа")

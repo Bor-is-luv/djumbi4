@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views.generic.detail import DetailView
 from django.conf import settings
 
@@ -22,6 +22,23 @@ import json
 
 import os
 
+from PIL import Image
+
+from django.shortcuts import redirect
+
+# not a controller
+def check_if_file_exitsts_and_delete(path: str) -> None:
+    if os.path.exists(os.path.join(settings.MEDIA_ROOT, path)):
+        os.remove(os.path.join(settings.MEDIA_ROOT, path))
+
+# not a controller
+# change the size of the image to (300, 300)
+def process_image(path: str) -> None:
+    image = Image.open(os.path.join(settings.MEDIA_ROOT, path))
+    image = image.resize((300, 300))
+    image.save(os.path.join(settings.MEDIA_ROOT, path))
+
+# not a controller
 def get_user_ctx(request):
     user = request.user
     context = {}
@@ -175,7 +192,8 @@ def detail_lesson_view(request, lesson_id):
             # delete all associated files here
             for solution in solutions:
                 if os.path.exists(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)):
-                    os.remove(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name))
+                    os.remove(os.path.join(settings.MEDIA_ROOT,
+                                           solution.homework_solution.name))
             # delete the solutions in the db
             solutions.delete()
             solution = Solution.objects.create(
@@ -276,18 +294,37 @@ class UpdateUserView(UpdateView, LoginRequiredMixin):
         kwargs['user'] = self.request.user
         return kwargs
 
+@permission_required('cabinet.change_teacher')
+@login_required
+def update_teacher(request, pk):
+    context = {}
+    teacher = Teacher.objects.get(user_id=pk)
+    user = teacher.user
+    if request.method == 'POST':
+        form = UpdateTeacher(request.POST, request.FILES)
+        if form.is_valid():
+            setattr(user, 'first_name', form.cleaned_data['first_name'])
+            user.save()
+            setattr(user, 'last_name', form.cleaned_data['last_name'])
+            user.save()
 
-class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
-    permission_required = 'cabinet.change_teacher'
-    model = Teacher
-    form_class = UpdateTeacher
-    template_name = 'cabinet/update_teacher.html'
-    success_url = '/cabinet/'
-    # def form_valid(self, form):
-    #    if self.request.user.is_staff:
-    #        return super().form_valid(form)
-    #    else:
-    #        raise PermissionDenied
+            # delete the previous photo
+            check_if_file_exitsts_and_delete(teacher.image.name)
+
+            setattr(teacher, 'image', form.cleaned_data['image'])
+            teacher.save()
+
+            # change the size of the new photo
+            process_image(form.cleaned_data['image'].name)
+
+        return redirect('cabinet_page')
+    else:
+        form = form = UpdateTeacher(initial={
+                             'first_name': teacher.user.first_name, 'last_name': teacher.user.last_name, 'image': teacher.image})
+        context['form'] = form
+
+        return render(request, 'cabinet/update_teacher.html', context)
+
 
 
 class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
@@ -320,9 +357,11 @@ def fetch_lesson_ajax(request):
     return response
 
 #
-# 
+#
 # AJAX
 # course_name, user_id, keywords
+
+
 def search_lesson_ajax(request):
     request_data = json.loads(request.body)
     response_data = {}
@@ -420,13 +459,17 @@ def add_pupil_to_group(request, pupil_id, group_id):
 
 def download_solution(request, solution_id):
     solution = Solution.objects.get(id=solution_id)
-    file_path = os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)
+    file_path = os.path.join(
+        settings.MEDIA_ROOT, solution.homework_solution.name)
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
-            response = HttpResponse(fh.read(), content_type="application/force-download")
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            response = HttpResponse(
+                fh.read(), content_type="application/force-download")
+            response['Content-Disposition'] = 'inline; filename=' + \
+                os.path.basename(file_path)
             return response
     raise Http404
+
 
 class ListCourseView(ListView):
     template_name = 'cabinet/view_courses.html'

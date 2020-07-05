@@ -135,3 +135,7 @@ a:hover {
     font-weight: 700;
     font-size: large;
 }
+
+.photo-img {
+    border-radius: 50%;
+}
