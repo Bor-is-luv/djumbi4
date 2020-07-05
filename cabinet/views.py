@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
+from django.conf import settings
 
 from .forms import *
 from .models import *
@@ -19,6 +20,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+import os
 
 def get_user_ctx(request):
     user = request.user
@@ -169,14 +171,15 @@ def detail_lesson_view(request, lesson_id):
             pupil = Pupil.objects.get(id=ctx['user'].id)
             lesson = Lesson.objects.get(id=lesson_id)
             # it there already is a solution for this lesson for this pupil
-            try:
-                solution = Solution.objects.get(pupil=pupil, lesson=lesson)
-                solution.delete()
-                solution = Solution.objects.create(
-                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
-            except:
-                solution = Solution.objects.create(
-                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+            solutions = Solution.objects.filter(pupil=pupil, lesson=lesson)
+            # delete all associated files here
+            for solution in solutions:
+                if os.path.exists(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)):
+                    os.remove(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name))
+            # delete the solutions in the db
+            solutions.delete()
+            solution = Solution.objects.create(
+                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
 
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()
@@ -277,8 +280,6 @@ class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
 # AJAX
 
 # lesson_id, course_id, user_id
-
-
 def fetch_lesson_ajax(request):
     response_data = {'status': 'ok'}
 
@@ -299,9 +300,9 @@ def fetch_lesson_ajax(request):
     return response
 
 #
+# 
+# AJAX
 # course_name, user_id, keywords
-
-
 def search_lesson_ajax(request):
     request_data = json.loads(request.body)
     response_data = {}
@@ -396,6 +397,16 @@ def add_pupil_to_group(request, pupil_id, group_id):
     # context is empty now
     return render(request, template, context)
 
+
+def download_solution(request, solution_id):
+    solution = Solution.objects.get(id=solution_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/force-download")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 class ListCourseView(ListView):
     template_name = 'cabinet/view_courses.html'

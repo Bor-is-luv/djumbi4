@@ -24,4 +24,5 @@ urlpatterns = [
     path('get_pupil_lessons/<int:pupil>/<int:course>', get_pupil_lessons, name='get_pupil_lessons_url'),
     path('get_pupils_not_in_group/<int:group_id>', get_pupil_lessons, name='get_pupil_lessons_url'),
     path('add_pupil_to_group/<int:pupil_id>/<int:group_id>', get_pupil_lessons, name='get_pupil_lessons_url'),
+    path('download_solution/<int:solution_id>', download_solution, name='download_solution_url'),
 ]
