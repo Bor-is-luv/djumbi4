@@ -12,10 +12,10 @@
 
 {% block content %}
 <div class="container form-holder">
-    <form id="add_form" method="post">
+    <form id="create_group" method="post">
         {%  csrf_token %}
         {{ form }}
-        <button form="create_form" type="submit" class="a-reverse-button">Add</button>
+        <button form="create_group" type="submit" class="a-reverse-button">Add</button>
     </form>
 </div>
 
