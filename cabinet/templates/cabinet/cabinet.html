@@ -66,9 +66,6 @@
             {% for course in courses %}
             <h5 class="card-title">Курсы</h5>
             <p class="card-text d-flex ">{{course.name}}</p>
-            {% if user_type == 'teacher' %}
-            <a class="a-button" href="{% url 'update_course_page' course.id %}">  Редактировать </a>
-            {% endif %}
             <h5 class="card-title">Группы</h5>
             <p class="card-text d-flex ">
               {% for group in groups %}
