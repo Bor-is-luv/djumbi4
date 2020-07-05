@@ -214,6 +214,13 @@ class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     template_name = 'cabinet/update_group.html'
     success_url = '/cabinet/'
 
+    def form_valid(self, form):
+        teacher = self.request.user.teacher
+        if self.object.teacher != teacher:
+            raise PermissionDenied
+        else:
+            return super().form_valid(form)
+
     def get_form_kwargs(self):
         kwargs = super(UpdateGroupView, self).get_form_kwargs()
         kwargs['obj'] = self.object
@@ -255,6 +262,13 @@ class UpdateUserView(UpdateView, LoginRequiredMixin):
     template_name = 'cabinet/update_user.html'
     form_class = UpdateUser
     success_url = '/cabinet/'
+
+    def form_valid(self, form):
+        user = self.request.user
+        if self.object != user:
+            raise PermissionDenied
+        else:
+            return super().form_valid(form)
 
 
 class UpdateTeacherView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
