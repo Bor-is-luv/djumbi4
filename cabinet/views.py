@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.detail import DetailView
+from django.conf import settings
 
 from .forms import *
 from .models import *
@@ -19,6 +20,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+import os
 
 def get_user_ctx(request):
     user = request.user
@@ -169,14 +171,15 @@ def detail_lesson_view(request, lesson_id):
             pupil = Pupil.objects.get(id=ctx['user'].id)
             lesson = Lesson.objects.get(id=lesson_id)
             # it there already is a solution for this lesson for this pupil
-            try:
-                solution = Solution.objects.get(pupil=pupil, lesson=lesson)
-                solution.delete()
-                solution = Solution.objects.create(
-                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
-            except:
-                solution = Solution.objects.create(
-                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+            solutions = Solution.objects.filter(pupil=pupil, lesson=lesson)
+            # delete all associated files here
+            for solution in solutions:
+                if os.path.exists(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)):
+                    os.remove(os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name))
+            # delete the solutions in the db
+            solutions.delete()
+            solution = Solution.objects.create(
+                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
 
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()
