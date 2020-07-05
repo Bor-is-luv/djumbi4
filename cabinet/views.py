@@ -280,8 +280,6 @@ class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
 # AJAX
 
 # lesson_id, course_id, user_id
-
-
 def fetch_lesson_ajax(request):
     response_data = {'status': 'ok'}
 
@@ -302,9 +300,9 @@ def fetch_lesson_ajax(request):
     return response
 
 #
+# 
+# AJAX
 # course_name, user_id, keywords
-
-
 def search_lesson_ajax(request):
     request_data = json.loads(request.body)
     response_data = {}
@@ -399,6 +397,16 @@ def add_pupil_to_group(request, pupil_id, group_id):
     # context is empty now
     return render(request, template, context)
 
+
+def download_solution(request, solution_id):
+    solution = Solution.objects.get(id=solution_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, solution.homework_solution.name)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/force-download")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
 
 class ListCourseView(ListView):
     template_name = 'cabinet/view_courses.html'

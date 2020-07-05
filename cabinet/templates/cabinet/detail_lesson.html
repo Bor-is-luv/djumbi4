@@ -39,12 +39,15 @@
         </div>
         {% if user_type == 'teacher' %}
         <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
+            <h2>Домашние работы</h2>
             <div class="list-group">
                 {% for solution in homework %}
                 <li class="list-group-item">
-                    Ученик {{solution.pupil}}
-                    Статус {{solution.done}}
-                    Работа {{solution.homework_solution}}
+                    <p> <strong>Ученик: </strong>{{solution.pupil.user.last_name}} {{solution.pupil.user.first_name}}</p> 
+                    <p><strong>Статус: </strong> {% if solution.done == True %} Готово {%else%} Не готово {% endif %}</p>
+                    {% if solution.done == True %}
+                    <a href="{% url 'download_solution_url' solution.id %}" class="a-button">Скачать</a>
+                    {% endif %}
                 </li>
                 {% endfor %}
             </div>
@@ -54,7 +57,6 @@
         <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
             <form id="lesson_form" method="POST" enctype="multipart/form-data">
                 {%  csrf_token %}
-                Домашнее задание
                 {{ form }}
                 <button form="lesson_form" type="submit" class="a-reverse-button">Add</button>
             </form>
