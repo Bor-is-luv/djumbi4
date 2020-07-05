@@ -168,10 +168,15 @@ def detail_lesson_view(request, lesson_id):
         if form.is_valid():
             pupil = Pupil.objects.get(id=ctx['user'].id)
             lesson = Lesson.objects.get(id=lesson_id)
-
-            solution = Solution.objects.create(
-                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
-            # form.save()
+            # it there already is a solution for this lesson for this pupil
+            try:
+                solution = Solution.objects.get(pupil=pupil, lesson=lesson)
+                solution.delete()
+                solution = Solution.objects.create(
+                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+            except:
+                solution = Solution.objects.create(
+                    pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
 
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()

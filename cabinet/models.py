@@ -90,3 +90,6 @@ class Solution(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.DO_NOTHING, verbose_name='Урок')
     pupil = models.ForeignKey(Pupil, on_delete=models.DO_NOTHING, verbose_name='Ученик')
     done = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.lesson} {self.pupil}'
