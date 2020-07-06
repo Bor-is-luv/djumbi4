@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Учители {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<a class="navbar-brand navbar-a" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit navbar-a" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <h2>Учители</h2>
+            <div class="list-group">
+                {% for teacher in teachers %}
+                <li class="list-group-item">
+                    <p><strong>ФИО:</strong> {{teacher.user.last_name}} {{teacher.user.first_name}}</p>
+                    <p>
+                    <strong>Группы: </strong>
+                    {% for group in user_ctx.groups %}
+                    {% if group.teacher == teacher %}
+                        {{group.name}}
+                    {% endif %}
+                    {% endfor %}
+                    {% if user_ctx.user_type == 'admin' %}
+                    <p>
+                        <a class="a-button" href="{% url 'update_teacher_page' teacher.user_id %}">Редактировать</a>
+                    </p>
+                    {% endif %}
+                </p>
+                </li>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

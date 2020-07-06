@@ -26,5 +26,5 @@ urlpatterns = [
     path('add_pupil_to_group/<int:pupil_id>/<int:group_id>', get_pupil_lessons, name='get_pupil_lessons_url'),
     path('download_solution/<int:solution_id>', download_solution, name='download_solution_url'),
     path('list_courses/', ListCourseView.as_view(), name='list_courses_url'),
-    path('list_teachers/', ListTeachersView.as_view, name='list_teachers_url'),
+    path('list_teachers/', ListTeachersView.as_view(), name='list_teachers_url'),
 ]
