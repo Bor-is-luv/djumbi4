@@ -10,6 +10,7 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, lesson_group, 
     lesson_number_div.innerHTML = lesson_number;
 
     let group_name_div;
+    console.log(lesson_group);
     if (lesson_group != "") {
         group_name_div = document.createElement('div');
         group_name_div.className = 'text-center overflow-auto mx-5';
@@ -25,9 +26,6 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, lesson_group, 
     fetch_url = fetch_url.slice(0, fetch_url.length - 2);
     lesson_fetch_button.href = fetch_url + lesson_id;
     lesson_fetch_button.innerHTML = 'Посмотреть занятие'
-    // lesson_fetch_button.onclick = function() {
-    //     fetch_lesson_ajax(fetch_url, lesson_id);
-    // }
 
     // Construct the node tree
     lesson_div.append(lesson_number_div);
