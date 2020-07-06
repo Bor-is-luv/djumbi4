@@ -368,6 +368,7 @@ def search_lesson_ajax(request):
     response_data['lesson_name'] = []
     response_data['lesson_number'] = []
     response_data['lesson_id'] = []
+    response_data['group'] = []
 
     # return all the lessons
     # TODO return the lessons only from the specific course
@@ -376,7 +377,7 @@ def search_lesson_ajax(request):
         course = Course.objects.get(pk=request_data['course_id'])
         groups = Group.objects.filter(course_id=course.id)  # <--- CHECK IT!!!
         for group in groups:
-            if pupil in group.pupils:
+            if user in group.pupils.all():
                 lessons = Lesson.objects.filter(group_id=group.id)
                 if (request_data['keywords']) is not '':
                     lessons = lessons.filter(
@@ -400,6 +401,8 @@ def search_lesson_ajax(request):
                     response_data['lesson_name'].append(lesson.name)
                     response_data['lesson_number'].append(lesson.number)
                     response_data['lesson_id'].append(lesson.id)
+                    response_data['group'].append(group.name)
+                
         except:
             print('yo')
         # find the user, then find the course, then finally find the group

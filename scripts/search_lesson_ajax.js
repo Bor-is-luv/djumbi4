@@ -1,20 +1,27 @@
 // TODO add the url to the lesson to bind it to the button
-function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
+function create_lesson_div(lesson_number, lesson_name, lesson_id, lesson_group, fetch_url) {
 
     // Create divs for the lesson
     let lesson_div = document.createElement('div');
-    lesson_div.className = 'card-body border  d-flex flex-wrap flex-row justify-content-between';
+    lesson_div.className = 'card-body border  d-flex flex-wrap flex-row justify-content-start';
 
     let lesson_number_div = document.createElement('div');
-    lesson_number_div.className = 'lesson-number font-weight-bold';
+    lesson_number_div.className = 'lesson-number font-weight-bold mr-5';
     lesson_number_div.innerHTML = lesson_number;
 
+    let group_name_div;
+    if (lesson_group != "") {
+        group_name_div = document.createElement('div');
+        group_name_div.className = 'text-center overflow-auto mx-5';
+        group_name_div.innerHTML = lesson_group;
+    }
+
     let lesson_name_div = document.createElement('div');
-    lesson_name_div.className = 'text-center overflow-auto';
+    lesson_name_div.className = 'text-center overflow-auto mx-5';
     lesson_name_div.innerHTML = lesson_name;
 
     let lesson_fetch_button = document.createElement('a');
-    lesson_fetch_button.className = 'a-button'
+    lesson_fetch_button.className = 'a-button ml-auto'
     fetch_url = fetch_url.slice(0, fetch_url.length - 2);
     lesson_fetch_button.href = fetch_url + lesson_id;
     lesson_fetch_button.innerHTML = 'Посмотреть занятие'
@@ -24,6 +31,9 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, fetch_url) {
 
     // Construct the node tree
     lesson_div.append(lesson_number_div);
+    if (lesson_group != "") {
+        lesson_div.append(group_name_div);
+    }
     lesson_div.append(lesson_name_div);
     lesson_div.append(lesson_fetch_button);
 
@@ -73,8 +83,14 @@ async function search_lesson_ajax(course_id, user_id, url, fetch_url) {
 
         // Appending new found lessons
         for (let i = 0; i < json.lesson_name.length; i++) {
-            let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id[i], fetch_url);
-            node_to_be_appended_to.append(tempLessonNode);
+            if (json.group.length != 0) {
+                let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id[i], json.group[i], fetch_url);
+                node_to_be_appended_to.append(tempLessonNode);
+            } else {
+                let tempLessonNode = create_lesson_div(json.lesson_number[i], json.lesson_name[i], json.lesson_id[i], "", fetch_url);
+                node_to_be_appended_to.append(tempLessonNode);
+            }
+
         }
     } else {
         alert("Ошибка HTTP: " + fetched_response.status);
