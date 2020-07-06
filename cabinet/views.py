@@ -479,7 +479,21 @@ class ListCourseView(ListView):
     context_object_name = 'courses'
     model = Course
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['user_ctx'] = get_user_ctx(self.request)
+        return context
+
 class ListTeachersView(ListView):
     template_name = 'cabinet/view_teachers.html'
     context_object_name = 'teachers'
     model = Teacher
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['user_ctx'] = get_user_ctx(self.request)
+        return context
