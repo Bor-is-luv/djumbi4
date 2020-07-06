@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create course</title>
-</head>
-<body>
-<div><a href="{% url 'cabinet_page' %}"> cabinet </a></div>
-<form id="add_form" method="post">
-    {%  csrf_token %}
-    {{ form }}
-    <button form="add_form" type="submit" class="btn.btn-primary.mt-4">Add</button>
-</form>
-</body>
-</html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Создать урок {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
+<a class="navbar-brand navbar-a" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit navbar-a" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container form-holder">
+    <form id="create_teacher" method="post">
+        {%  csrf_token %}
+        {{ form }}
+        <button form="create_teacher" type="submit" class="a-reverse-button">Задать</button>
+    </form>
+</div>
+
+{% endblock %}
+
