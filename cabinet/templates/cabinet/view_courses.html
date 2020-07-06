@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Создать урок {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<a class="navbar-brand navbar-a" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit navbar-a" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
+            <h2>Курсы</h2>
+            <div class="list-group">
+                {% for course in courses %}
+                <li class="list-group-item">
+                    <p> <strong>Курс: </strong>{{course.name}}</p> 
+                    <!-- <p><strong>Группы: </strong></p> -->
+                    <!-- <a href="{% url 'download_solution_url' solution.id %}" class="a-button">Скачать</a> -->
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

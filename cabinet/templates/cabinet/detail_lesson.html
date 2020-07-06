@@ -6,8 +6,8 @@
 <!--NAVBAR-->
 {% block navbar %}
 <link rel="stylesheet" href="{% static 'FormStyle.css' %}" />
-<a class="navbar-brand" href="{% url 'cabinet_page' %}">Личный кабинет</a>
-<a class="navbar-brand quit" href="{% url 'logout_page' %}">Выход</a>
+<a class="navbar-brand navbar-a" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit navbar-a" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
 
 {% block content %}
