@@ -11,29 +11,27 @@
 <!--NAVBAR-->
 {% block navbar %}
 <a class="navbar-brand navbar-a" href="#">Личный кабинет</a>
-{% if user_type == 'admin'  %}
-<a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
-<a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
-{% endif %}
-<!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
 <a class="quit navbar-a a-button" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
 
 {% block content %}
 
-{% if user_type != 'admin' %}
 <!--JUMBOTRON-->
 <div class="jumbotron jumbotron-fluid pt-4 pb-4">
   <div class="container">
+    {% if user_type == 'admin' %}
+    <h1 class="display-5">Добро пожаловать, Admini$trator</h1>
+    {% else %}
     <h1 class="display-5">Добро пожаловать, {{ request.user.first_name }}</h1>
+    {% endif %}
+
   </div>
 </div>
-{% endif %}
 
 {% if user_type != 'admin' %}
 <!--INFO-->
 <div class="container">
-  <div class="row d-flex justify-content-center">
+  <div class="row d-flex">
     <div class="col-xs-6 col-md-6 col-lg-5 col-xl-5">
       <div class="card mb-4 shadow">
         <h5 class="card-header">Информация</h5>
@@ -77,9 +75,10 @@
   <div class="row">
     <div class="col-xs-8 col-md-12 col-lg-12 col-xl-12" style="max-height: 460px;">
       <!--COURSES-->
-      <div class="d-flex flex-wrap justify-content-sm-center justify-content-lg-between justify-content-md-between justify-content-xl-between">
+      <div
+        class="d-flex flex-wrap justify-content-sm-center justify-content-lg-start justify-content-md-between justify-content-xl-start">
         {% for course in courses %}
-        <div class="card mb-4 mr-4 shadow w-30">
+        <div class="card mb-4 mr-5 shadow w-30">
           <div class="card-header"><strong>{{course.name}}</strong></div>
           <div class="card-body">
             <h5 class="card-title">Группы</h5>
@@ -101,13 +100,14 @@
   </div>
 </div>
 
-{% if user_type == 'teacher' %}
+{% if user_type == 'teacher'%}
 
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <div class="d-flex flex-wrap justify-content-sm-center justify-content-lg-start justify-content-md-start justify-content-xl-start">
-        <div class="card mb-4 mr-4 shadow w-50 ">
+      <div
+        class="d-flex flex-wrap justify-content-sm-center justify-content-lg-start justify-content-md-start justify-content-xl-start">
+        <div class="card mb-4 mr-4 shadow w-30">
           <div class="card-body">
             <p class="card-text">Создать новую учебную группу для курса</p>
             <div class="d-flex">
@@ -115,53 +115,128 @@
             </div>
           </div>
         </div>
-        <div class="card mb-4 mr-4 shadow w-50">
-          <div class="card-body">
-            <p class="card-text">Создать новый урок для учебной группы</p>
-            <div class="d-flex">
-              <a class="a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
+          <div class="card mb-4 mr-4 shadow w-30">
+            <div class="card-body">
+              <p class="card-text">Создать новый урок для учебной группы</p>
+              <div class="d-flex">
+                <a class="a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4 mr-4 shadow w-30">
+            <div class="card-body">
+              <p class="card-text">Посмотреть все курсы</p>
+              <div class="d-flex">
+                <a class="a-button" href="{% url 'list_courses_url' %}">Посмотреть курсы</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-{% endif %}
+  {% endif %}
 
-<!-- DETAILED COURSES -->
-<div class="container">
-  <div class="accordion shadow" id="accordionLessons">
-    <!-- КУРС 1 -->
-    {% for course in courses %}
-    <div class="card mb-3 shadow">
-      <div class="card-header" id="{{course.name}}">
-        <h2 class="mb-0">
-          <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
-            data-target="#course_{{course.id}}" aria-expanded="false" aria-controls="course_{{course.id}}"
-            onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
-            {{course.name}}
-          </button>
-        </h2>
+  {% if user_type == 'admin' %}
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+
+        
+        <div class="card mb-4 mr-4 shadow">
+          <div class="card-header">Создание</div>
+          <div class="card-body">
+            <p class="card-text">Создать новый учебный курс</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_course_page' %}">Создать курс</a>
+            </div>
+            <p class="card-text">Создать новую учебную группу для курса</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_group_page' %}">Создать группу</a>
+            </div>
+            <p class="card-text">Задать нового учителя</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_teacher_page' %}">Задать учителя</a>
+            </div>
+            <p class="card-text">Создать новый урок для учебной группы</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div id="course_{{course.id}}" class="collapse" aria-labelledby="course_{{course.id}}"
-        data-parent="#accordionLessons">
-        <div id="search_div_{{course.id}}" class="card-body lesson-search border">
-          <h5>
-            Поиск по урокам
-          </h5>
-          {% csrf_token %}
-          <input id="search_input_{{course.id}}" class="search-input-class form-control mr-sm-2" type="search"
-            placeholder="Введите название темы" aria-label="Search" />
-          <button
-            onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
-            id="search_button_{{course.id}}" class="my-2 my-sm-0 a-button">
-            Поиск
-          </button>
+      <div class="col-6">
+        <div class="card mb-4 mr-4 shadow">
+          <div class="card-header">Курсы</div>
+          <div class="card-body">
+            <p class="card-text">Создать новый учебный курс</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_course_page' %}">Создать курс</a>
+            </div>
+            <p class="card-text">Создать новую учебную группу для курса</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_group_page' %}">Создать группу</a>
+            </div>
+            <p class="card-text">Посмотреть все курсы</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'list_courses_url' %}">Посмотреть курсы</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    {% endfor %}
+    <div class="row">
+      <div class="col-6">
+        <div class="card mb-4 mr-4 shadow">
+          <div class="card-header">Учителя</div>
+          <div class="card-body">
+            <p class="card-text">Задать нового учителя</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'create_teacher_page' %}">Задать учителя</a>
+            </div>
+            <p class="card-text">Посмотреть всех учителей</p>
+            <div class="d-flex">
+              <a class="a-button card-a-button" href="{% url 'list_teachers_url' %}">Посмотреть учителей</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
-{% endblock %}
+  {% endif %}
+
+  <!-- DETAILED COURSES -->
+  <div class="container">
+    <div class="accordion shadow" id="accordionLessons">
+      {% for course in courses %}
+      <div class="card mb-3 shadow">
+        <div class="card-header" id="{{course.name}}">
+          <h2 class="mb-0">
+            <button class="btn btn-link accordion-btn collapsed" type="button" data-toggle="collapse"
+              data-target="#course_{{course.id}}" aria-expanded="false" aria-controls="course_{{course.id}}"
+              onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')">
+              {{course.name}}
+            </button>
+          </h2>
+        </div>
+        <div id="course_{{course.id}}" class="collapse" aria-labelledby="course_{{course.id}}"
+          data-parent="#accordionLessons">
+          <div id="search_div_{{course.id}}" class="card-body lesson-search border">
+            <h5>
+              Поиск по урокам
+            </h5>
+            {% csrf_token %}
+            <input id="search_input_{{course.id}}" class="search-input-class form-control mr-sm-2" type="search"
+              placeholder="Введите название темы" aria-label="Search" />
+            <button
+              onclick="search_lesson_ajax('{{course.id}}', {{user.id}}, '{% url 'search_lesson_ajax_url' %}', '{% url 'detail_lesson_page' 0 %}')"
+              id="search_button_{{course.id}}" class="my-2 my-sm-0 a-button">
+              Поиск
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock %}

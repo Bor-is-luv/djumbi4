@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% load static %}
 
-{% block title %} Создать урок {% endblock %}
+{% block title %} Курсы {% endblock %}
 
 <!--NAVBAR-->
 {% block navbar %}
@@ -12,21 +12,31 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-6">
+        <div class="col-12 mt-5">
             <h2>Курсы</h2>
             <div class="list-group">
                 {% for course in courses %}
                 <li class="list-group-item">
-                    <p> <strong>Курс: </strong>{{course.name}}</p> 
-                    <!-- <p><strong>Группы: </strong></p> -->
-                    <!-- <a href="{% url 'download_solution_url' solution.id %}" class="a-button">Скачать</a> -->
+                    <p> <strong>Курс: </strong>{{course.name}}</p>
+                    {% if user_ctx.user_type == 'admin' %}
+                    <p>
+                        <a class="a-button" href="{% url 'update_course_page' course.id %}">Редактировать</a>
+                    </p>
+                    {% endif %}
+                    {% if user_ctx.user_type != 'admin' %}
+                    <strong>Группы: </strong>
+                    {% for group in user_ctx.groups %}
+                    {% if group.course == course %}
+                    {{group.name}}
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                 </li>
-                {% endfor %}
-            </div>
+            {% endfor %}
         </div>
-
+        </div>
     </div>
+
 </div>
 
 {% endblock %}
-
