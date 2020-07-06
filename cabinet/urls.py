@@ -27,4 +27,5 @@ urlpatterns = [
     path('download_solution/<int:solution_id>', download_solution, name='download_solution_url'),
     path('list_courses/', ListCourseView.as_view(), name='list_courses_url'),
     path('list_teachers/', ListTeachersView.as_view(), name='list_teachers_url'),
+    path('list_groups/', ListGroupsView.as_view(), name='list_groups_url'),
 ]

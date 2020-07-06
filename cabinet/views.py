@@ -500,3 +500,15 @@ class ListTeachersView(ListView):
         # Add in the publisher
         context['user_ctx'] = get_user_ctx(self.request)
         return context
+
+class ListGroupsView(ListView):
+    template_name = 'cabinet/view_groups.html'
+    context_object_name = 'groups'
+    model = Group
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['user_ctx'] = get_user_ctx(self.request)
+        return context

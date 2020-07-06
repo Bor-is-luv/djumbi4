@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %} Группы {% endblock %}
+
+<!--NAVBAR-->
+{% block navbar %}
+<a class="navbar-brand navbar-a" href="{% url 'cabinet_page' %}">Личный кабинет</a>
+<a class="navbar-brand quit navbar-a" href="{% url 'logout_page' %}">Выход</a>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <h2>Группы</h2>
+            <div class="list-group">
+                {% for group in groups %}
+                <li class="list-group-item">
+                    <p><strong>Название: </strong> {{group.name}}</p>
+                    <p><strong>Курс: </strong>{{group.course}}</p>
+                    <p>
+                        <strong>День: </strong>
+                        {{group.day}}</p>
+                    <p><strong>Время: </strong>{{group.time}}</p>
+                    <p>
+                        <a class="a-button" href="{% url 'update_group_page' group.id %}">Редактировать</a>
+                    </p>
+                    </p>
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
