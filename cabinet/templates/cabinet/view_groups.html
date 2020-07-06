@@ -16,7 +16,7 @@
             <h2>Группы</h2>
             <div class="list-group">
                 {% for group in groups %}
-                <li class="list-group-item">
+                <li class="list-group-item black-list">
                     <p><strong>Название: </strong> {{group.name}}</p>
                     <p><strong>Курс: </strong>{{group.course}}</p>
                     <p>
@@ -24,7 +24,7 @@
                         {{group.day}}</p>
                     <p><strong>Время: </strong>{{group.time}}</p>
                     <p>
-                        <a class="a-button" href="{% url 'update_group_page' group.id %}">Редактировать</a>
+                        <a class="a-reverse-button" href="{% url 'update_group_page' group.id %}">Редактировать</a>
                     </p>
                     </p>
                 </li>

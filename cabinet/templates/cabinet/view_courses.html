@@ -16,7 +16,7 @@
             <h2>Курсы</h2>
             <div class="list-group">
                 {% for course in courses %}
-                <li class="list-group-item">
+                <li class="list-group-item black-list">
                     <p> <strong>Курс: </strong>{{course.name}}</p>
                     {% if user_ctx.user_type == 'admin' %}
                     <p>

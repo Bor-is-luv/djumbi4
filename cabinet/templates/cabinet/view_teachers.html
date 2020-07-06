@@ -16,7 +16,7 @@
             <h2>Учители</h2>
             <div class="list-group">
                 {% for teacher in teachers %}
-                <li class="list-group-item">
+                <li class="list-group-item black-list">
                     <p><strong>ФИО:</strong> {{teacher.user.last_name}} {{teacher.user.first_name}}</p>
                     <p>
                     <strong>Группы: </strong>
@@ -27,7 +27,7 @@
                     {% endfor %}
                     {% if user_ctx.user_type == 'admin' %}
                     <p>
-                        <a class="a-button" href="{% url 'update_teacher_page' teacher.user_id %}">Редактировать</a>
+                        <a class="a-reverse-button" href="{% url 'update_teacher_page' teacher.user_id %}">Редактировать</a>
                     </p>
                     {% endif %}
                 </p>

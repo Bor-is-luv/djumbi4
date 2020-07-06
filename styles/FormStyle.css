@@ -45,21 +45,4 @@
       width: 100%;
       margin: 18px 0 9px 0;
     }
-    .a-reverse-button {
-        padding: 7px 15px;
-        font-size: 17px;
-        font-weight: 600;
-        color: black;
-        border-radius: 5px;
-        border: 2px solid white;
-        background-color: white;
-        cursor: pointer;
-        /* width: max-content; */
-        transition: 0.15s ease;
-    }
     
-    .a-reverse-button:hover {
-        color: white;
-        background-color: #343a40;
-        text-decoration: none;
-    }
