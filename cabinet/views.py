@@ -474,7 +474,9 @@ def download_solution(request, solution_id):
 class ListCourseView(ListView):
     template_name = 'cabinet/view_courses.html'
     context_object_name = 'courses'
+    model = Course
 
 class ListTeachersView(ListView):
     template_name = 'cabinet/view_teachers.html'
     context_object_name = 'teachers'
+    model = Teacher
