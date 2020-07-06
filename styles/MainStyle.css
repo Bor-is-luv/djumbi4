@@ -52,7 +52,7 @@ a:hover {
 
 @media (min-width: 992px) {
     .width-for-course-card {
-        max-width: 300px;
+        max-width: 400px;
     }
     
     .logo-pic {
@@ -63,7 +63,7 @@ a:hover {
 
 @media (min-width: 1200px) {
     .width-for-course-card {
-        max-width: 300px;
+        max-width: 400px;
     }
 
     .logo-pic {
@@ -139,3 +139,10 @@ a:hover {
 .photo-img {
     border-radius: 50%;
 }
+
+.image-holder {
+    display: flex;
+    justify-content: center;
+    /* align-items: flex-start; */
+    /* min-height: 100vh; */
+  } 

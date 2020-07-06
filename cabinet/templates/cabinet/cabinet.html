@@ -11,25 +11,30 @@
 <!--NAVBAR-->
 {% block navbar %}
 <a class="navbar-brand navbar-a" href="#">Личный кабинет</a>
-<!-- <a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a> -->
-<!-- <a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a> -->
+{% if user_type == 'admin'  %}
+<a class="navbar-brand" href="{% url 'create_course_page' %}">Создать курс</a>
+<a class="navbar-brand" href="{% url 'create_teacher_page' %}">Создать учителя</a>
+{% endif %}
 <!-- <a class="navbar-brand" href="#">{{ request.user.first_name }}</a> -->
 <a class="quit navbar-a a-button" href="{% url 'logout_page' %}">Выход</a>
 {% endblock %}
 
 {% block content %}
 
+{% if user_type != 'admin' %}
 <!--JUMBOTRON-->
 <div class="jumbotron jumbotron-fluid pt-4 pb-4">
   <div class="container">
     <h1 class="display-5">Добро пожаловать, {{ request.user.first_name }}</h1>
   </div>
 </div>
+{% endif %}
 
+{% if user_type != 'admin' %}
 <!--INFO-->
 <div class="container">
-  <div class="row">
-    <div class="col-xs-6 col-md-7 col-lg-7 col-xl-5">
+  <div class="row d-flex justify-content-center">
+    <div class="col-xs-6 col-md-6 col-lg-5 col-xl-5">
       <div class="card mb-4 shadow">
         <h5 class="card-header">Информация</h5>
         <div class="card-body">
@@ -58,34 +63,35 @@
       </div>
     </div>
     {% if user_type == 'teacher' %}
-    <div class="col-xs-6 col-md-5 col-lg-5 col-xl-7">
-      <img class="photo-img" src="{{user.image.url}}" alt="Фото">
+    <div class="col-xs-6 col-md-6 col-lg-7 col-xl-7">
+      <div class="image-holder">
+        <h2>Фото</h2>
+        <img class="photo-img" src="{{user.image.url}}" alt="Фото">
+      </div>
     </div>
     {% endif %}
   </div>
-
 </div>
+{% endif %}
 <div class="container">
   <div class="row">
-    <div class="col-xs-8 col-md-10 col-lg-8 col-xl-7" style="max-height: 460px;">
+    <div class="col-xs-8 col-md-12 col-lg-12 col-xl-12" style="max-height: 460px;">
       <!--COURSES-->
-      <div class="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-md-start">
+      <div class="d-flex flex-wrap justify-content-sm-center justify-content-lg-between justify-content-md-between justify-content-xl-between">
         {% for course in courses %}
-        <div class="card mb-4 shadow width-for-course-card">
+        <div class="card mb-4 mr-4 shadow w-30">
           <div class="card-header"><strong>{{course.name}}</strong></div>
           <div class="card-body">
-            <!-- <h5 class="card-title">Название</h5>
-            <p class="card-text d-flex ">{{course.name}}</p> -->
             <h5 class="card-title">Группы</h5>
             <p class="card-text d-flex ">
               {{course.group}}
               {% for group in groups %}
-                {% if group.course == course %}
-                  {{group}}
+              {% if group.course == course %}
+              {{group}}
             <div class="d-flex">
               <a class="a-button" href="{% url 'detail_group_page' group.id %}"> Посмотреть </a>
             </div>
-                {% endif %}
+            {% endif %}
             {% endfor %}
           </div>
         </div>
@@ -94,35 +100,35 @@
     </div>
   </div>
 </div>
-    
-<!-- MAKE GROUP -->
+
+{% if user_type == 'teacher' %}
+
 <div class="container">
   <div class="row">
-    <!-- ДОБАВЛЕНИЕ КНОПКИ ГРУППЫ ПРИ ПРОФИЛЕ УЧИТЕЛЯ -->
-    {% if user_type == 'teacher' %}
-    <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
-      <div class="card mb-4 shadow w-100">
-        <div class="card-body">
-          <p class="card-text">Создать новую учебную группу для курса</p>
-          <div class="d-flex">
-            <a class="a-button" href="{% url 'create_group_page' %}">Создать группу</a>
+    <div class="col-12">
+      <div class="d-flex flex-wrap justify-content-sm-center justify-content-lg-start justify-content-md-start justify-content-xl-start">
+        <div class="card mb-4 mr-4 shadow w-50 ">
+          <div class="card-body">
+            <p class="card-text">Создать новую учебную группу для курса</p>
+            <div class="d-flex">
+              <a class="a-button" href="{% url 'create_group_page' %}">Создать группу</a>
+            </div>
+          </div>
+        </div>
+        <div class="card mb-4 mr-4 shadow w-50">
+          <div class="card-body">
+            <p class="card-text">Создать новый урок для учебной группы</p>
+            <div class="d-flex">
+              <a class="a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
-      <div class="card mb-4 shadow w-100">
-        <div class="card-body">
-          <p class="card-text">Создать новый урок для учебной группы</p>
-          <div class="d-flex">
-            <a class="a-button" href="{% url 'create_lesson_page' %}">Создать урок</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endif %}
   </div>
 </div>
+{% endif %}
+
 <!-- DETAILED COURSES -->
 <div class="container">
   <div class="accordion shadow" id="accordionLessons">
