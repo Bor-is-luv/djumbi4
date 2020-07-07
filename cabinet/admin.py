@@ -6,4 +6,5 @@ admin.site.register(Teacher)
 admin.site.register(Course)
 admin.site.register(Group)
 admin.site.register(Lesson)
+admin.site.register(Solution)
 

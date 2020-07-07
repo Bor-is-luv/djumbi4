@@ -23,9 +23,9 @@ class RecoverAccountForm(forms.Form):
     def clean(self):
         super().clean()
         email = self.cleaned_data['email']
-        name = self.cleaned_data['name']
-        surname = self.cleaned_data['surname']
-        if not User.objects.filter(email=email, name=name, surname=surname).exists():
+        first_name = self.cleaned_data['name']
+        last_name = self.cleaned_data['surname']
+        if not User.objects.filter(email=email, first_name=first_name, last_name=last_name).exists():
             raise ValidationError('User not exists')
 
 
@@ -43,7 +43,7 @@ class ChangePasswordForm(forms.Form):
     def clean(self):
         old_password = self.cleaned_data['old_password']
         new_password = self.cleaned_data['new_password']
-        if self.user.password != old_password:
+        if not self.user.check_password(old_password):
             raise ValidationError("Old password not correct, try again")
         if old_password == new_password:
             raise ValidationError("New password cannot be equal to the old password")

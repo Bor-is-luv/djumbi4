@@ -22,9 +22,9 @@ def recover_account(request):
         form = RecoverAccountForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            name = form.cleaned_data['name']
-            surname = form.cleaned_data['surname']
-            user = User.objects.filter(name=name, surname=surname, email=email)
+            first_name = form.cleaned_data['name']
+            last_name = form.cleaned_data['surname']
+            user = User.objects.get(first_name=first_name, last_name=last_name, email=email)
             password = User.objects.make_random_password()
             user.set_password(password)
             send_mail(
