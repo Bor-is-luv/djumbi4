@@ -1,12 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def get_first_name(self):
+    return self.first_name + ' ' + self.last_name
+
+User.add_to_class("__str__", get_first_name)
+
 
 class Pupil(models.Model):
     user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return f'{self.user.username}'
+        return f'{self.user.__str__() }'
 
     class Meta:
         verbose_name = 'Ученик'
@@ -21,7 +26,7 @@ class Teacher(models.Model):
     phone_number = models.CharField('Телефонный номер', blank=True, null=True, max_length=15)
 
     def __str__(self):
-        return f'{self.user.username }'
+        return f'{self.user.__str__() }'
 
     class Meta:
         verbose_name = 'Учитель'
