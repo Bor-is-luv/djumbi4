@@ -36,7 +36,10 @@ except:
 # not a controller
 def check_if_file_exitsts_and_delete(path: str) -> None:
     if os.path.exists(os.path.join(settings.MEDIA_ROOT, path)):
-        os.remove(os.path.join(settings.MEDIA_ROOT, path))
+        try:
+            os.remove(os.path.join(settings.MEDIA_ROOT, path))
+        except:
+            pass
 
 # not a controller
 # change the size of the image to (300, 300)
