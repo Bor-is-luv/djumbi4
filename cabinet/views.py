@@ -198,6 +198,7 @@ def detail_lesson_view(request, lesson_id):
             solutions.delete()
             solution = Solution.objects.create(
                 pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+        return redirect('cabinet_page')
 
     elif ctx['user_type'] == 'pupil':
         form = AddSolution()
