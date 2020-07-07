@@ -330,7 +330,10 @@ def update_teacher(request, pk):
             teacher.save()
 
             # change the size of the new photo
-            process_image(form.cleaned_data['image'].name)
+            try:
+                process_image(form.cleaned_data['image'].name)
+            except:
+                pass
 
         return redirect('cabinet_page')
     else:
