@@ -37,7 +37,7 @@ def recover_account(request):
     else:
         form = RecoverAccountForm()
 
-    return render(request, 'recover_account.html', {'form':form})
+    return render(request, 'registration/recover_account.html', {'form':form})
 
 
 @login_required
@@ -52,7 +52,7 @@ def change_password(request):
     else:
         form = ChangePasswordForm()
 
-    return render(request, 'change_password.html', {'form':form})
+    return render(request, 'registration/change_password.html', {'form':form})
 
 
 def confirm(request, key):
