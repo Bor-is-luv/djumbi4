@@ -29,7 +29,7 @@ class UpdateUser(forms.ModelForm):
 class UpdateGroup(forms.ModelForm):
     class Meta:
         model = Group
-        exclude = ('teacher',)
+        exclude = ('teacher', 'course')
 
     def __init__(self, *args, **kwargs):
         if 'obj' in kwargs and kwargs['obj'] is not None:
@@ -108,9 +108,15 @@ class CreateTeacher(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = '__all__'
-
+#
     def __init__(self, *args, **kwargs):
+        qs_users = User.objects.all()
+        qs_teachers = Teacher.objects.all()
+        for teacher in qs_teachers:
+            qs_users = qs_users.exclude(pk=teacher.user_id)
+
         super().__init__(*args, **kwargs)
+        self.fields['user'].queryset = qs_users
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 
