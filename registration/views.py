@@ -34,7 +34,7 @@ def recover_account(request):
             [f'{user.email}'],
             fail_silently=False)
             user.save()
-        return redirect('login_page')
+            return redirect('login_page')
     else:
         form = RecoverAccountForm()
 
