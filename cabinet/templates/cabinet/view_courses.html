@@ -20,7 +20,7 @@
                     <p> <strong>Курс: </strong>{{course.name}}</p>
                     {% if user_ctx.user_type == 'admin' %}
                     <p>
-                        <a class="a-button" href="{% url 'update_course_page' course.id %}">Редактировать</a>
+                        <a class="a-reverse-button" href="{% url 'update_course_page' course.id %}">Редактировать</a>
                     </p>
                     {% endif %}
                     {% if user_ctx.user_type != 'admin' %}

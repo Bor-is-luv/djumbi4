@@ -63,8 +63,10 @@
     {% if user_type == 'teacher' %}
     <div class="col-xs-6 col-md-6 col-lg-7 col-xl-7">
       <div class="image-holder">
+        {% if user.image %}
         <h2>Фото</h2>
         <img class="photo-img" src="{{user.image.url}}" alt="Фото">
+        {% endif %}
       </div>
     </div>
     {% endif %}
