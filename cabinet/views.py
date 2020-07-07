@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, Http404
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
@@ -486,12 +486,15 @@ def download_solution(request, solution_id):
     file_path = os.path.join(
         settings.MEDIA_ROOT, solution.homework_solution.name)
     if os.path.exists(file_path):
-        with open(file_path, 'rb') as fh:
-            response = HttpResponse(
-                fh.read(), content_type="application/force-download")
-            response['Content-Disposition'] = 'inline; filename=' + \
-                os.path.basename(file_path)
-            return response
+        try:
+            with open(file_path, 'rb') as fh:
+                response = HttpResponse(
+                    fh.read(), content_type="application/force-download")
+                response['Content-Disposition'] = 'inline; filename=' + \
+                    os.path.basename(file_path)
+                return response
+        except:
+            pass
     raise Http404
 
 
