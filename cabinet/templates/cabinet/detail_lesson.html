@@ -44,7 +44,6 @@
                 {% for solution in homework %}
                 <li class="list-group-item">
                     <p> <strong>Ученик: </strong>{{solution.pupil.user.last_name}} {{solution.pupil.user.first_name}}</p> 
-                    <p><strong>Статус: </strong> {% if solution.done == True %} Готово {%else%} Не готово {% endif %}</p>
                     {% if solution.done == True %}
                     <a href="{% url 'download_solution_url' solution.id %}" class="a-button">Скачать</a>
                     {% endif %}
