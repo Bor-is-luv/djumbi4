@@ -13,7 +13,7 @@
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-xs-6 col-md-7 col-lg-7 col-xl-5 pupil-table-col">
+        <div class="col-xs-6 col-md-7 col-lg-7 col-xl-7 pupil-table-col">
             <h2>Ученики в группе</h2>
             <table class="table">
                 <thead class="thead-dark">
@@ -34,6 +34,10 @@
             {% if request.user.first_name == object.teacher.user.first_name %}
             <a class="a-button" href="{% url 'update_group_page' object.id %}">Редактировать</a>
             {% endif %}
+        </div>
+        <div class="col-xs-6 col-md-5 col-lg-5 col-xl-5">
+            <h2 class="mt-4">Учитель</h2>
+            <p>{{group_teacher.user.first_name}} {{group_teacher.user.last_name}}</p>
         </div>
     </div>
 </div>

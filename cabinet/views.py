@@ -212,6 +212,13 @@ def detail_lesson_view(request, lesson_id):
 class DetailGroupView(DetailView, LoginRequiredMixin):
     model = Group
     template_name = 'cabinet/detail_group.html'
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in the publisher
+        context['group_teacher'] = Teacher.objects.get(pk=self.object.teacher_id)
+        return context
     # get_object()
     # object
 
