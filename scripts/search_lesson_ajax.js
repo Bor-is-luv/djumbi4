@@ -10,7 +10,6 @@ function create_lesson_div(lesson_number, lesson_name, lesson_id, lesson_group, 
     lesson_number_div.innerHTML = lesson_number;
 
     let group_name_div;
-    console.log(lesson_group);
     if (lesson_group != "") {
         group_name_div = document.createElement('div');
         group_name_div.className = 'text-center overflow-auto mx-5';
