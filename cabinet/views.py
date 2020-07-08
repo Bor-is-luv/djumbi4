@@ -525,24 +525,37 @@ class ListGroupsView(ListView):
 
 
 def view_solutions_by_ajax(request):
-    id = request.POST.get('teacher_id', '')
-    teacher = Teachers.objects.get(id=id)
-    groups = teahcer.group_set.all()
+    request_data = json.loads(request.body)
+    teacher_id = request_data['teacher_id']
+
+    teacher = Teachers.objects.get(id=teacher_id)
+    groups = teacher.group_set.all()
     lessons = []
     solutions = []
 
     for group in groups:
-        lessons.append(group.lesson_set.all())
+        for lesson in group.lesson_set.all():
+            lessons.append(lesson)
 
     for lesson in lessons:
-        solutions.append(lesson.solution_set.all())
+        for solution in lesson.solution_set.all():
+            solutions.append(solution)
 
     result_pupils = []
     result_groups = []
     result_lessons = []
     for solution in solutions:
         if not solution.seen_by_teacher:
-            result_pupils.append(solution.pupil)
+            result_pupils.append(solution.pupil.user.first_name + solution.pupil.user.last_name)
             lesson = solution.lesson
-            result_lessons.append(lesson)
-            result_groups.append(lesson.group)
+            result_lessons.append(lesson.name)
+            result_groups.append(lesson.group.name)
+
+    response_data['lesson_name'] = result_lessons
+    response_data['group_name'] = result_groups
+    response_data['pupil_name'] = result_pupils
+
+    content = json.dumps(response_data)
+    response = HttpResponse(content, content_type='application/json')
+
+    return response
