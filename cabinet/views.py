@@ -118,9 +118,6 @@ class CreateCourseView(PermissionRequiredMixin, CreateView, LoginRequiredMixin):
 class CreateTeacherView(CreateView, LoginRequiredMixin):
 
     response_data = {'status': 'ok'}
-    # pupil = Pupil.objects.filter(pk=request.GET.get('user_id'))
-
-    # permission_required = 'cabinet.add_teacher'
     model = Teacher
     template_name = 'cabinet/create_teacher.html'
     form_class = CreateTeacher
@@ -136,13 +133,10 @@ class CreateTeacherView(CreateView, LoginRequiredMixin):
             user.save()
             delete_course = Permission.objects.get(codename='delete_course')
             add_course = Permission.objects.get(codename='add_course')
-            # change_course = Permission.objects.get(codename='change_course')
             delete_teacher = Permission.objects.get(codename='delete_teacher')
             add_teacher = Permission.objects.get(codename='add_teacher')
-            # change_teacher = Permission.objects.get(codename='change_teacher')
-            user.user_permissions.remove(delete_course, add_course,  # change_course,
+            user.user_permissions.remove(delete_course, add_course, 
                                          delete_teacher, add_teacher)
-            # change_teacher)
             user.save()
             pupil.delete()
             return super().form_valid(form)
@@ -229,8 +223,6 @@ class DetailGroupView(DetailView, LoginRequiredMixin):
         # Add in the publisher
         context['group_teacher'] = Teacher.objects.get(pk=self.object.teacher_id)
         return context
-    # get_object()
-    # object
 
 
 class DetailTeacherView(DetailView, LoginRequiredMixin):
@@ -264,7 +256,6 @@ class UpdateGroupView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
 
 
 class UpdateCourseView(UpdateView, LoginRequiredMixin):
-    # permission_required = 'cabinet.change_course'
     model = Course
     form_class = UpdateCourse
     template_name = 'cabinet/update_course.html'
@@ -347,7 +338,6 @@ def update_teacher(request, pk):
         return render(request, 'cabinet/update_teacher.html', context)
 
 
-
 class UpdatePupilView(PermissionRequiredMixin, UpdateView, LoginRequiredMixin):
     permission_required = 'cabinet.change_pupil'
     model = Pupil
@@ -377,12 +367,9 @@ def fetch_lesson_ajax(request):
 
     return response
 
-#
-#
+
 # AJAX
 # course_name, user_id, keywords
-
-
 def search_lesson_ajax(request):
     request_data = json.loads(request.body)
     response_data = {}
@@ -431,7 +418,6 @@ def search_lesson_ajax(request):
 
         # find the specific lesson
         # in SQLite non-ASCII characters are case-sensitive only
-        # sad T-T
 
     content = json.dumps(response_data)
     response = HttpResponse(content, content_type='application/json')
@@ -444,7 +430,7 @@ def get_pupil_lessons(request, pupil_id, course_id):
     context['lessons'] = []
     pupil = Pupil.objects.get(pupil_id)
     course = Course.objects.get(course_id)
-    groups = Group.objects.filter(course=course)  # course.group_set.all()
+    groups = Group.objects.filter(course=course)
     for group in groups:
         if pupil in group.pupils:
             lessons = Lesson.objects.filter(group=group)
