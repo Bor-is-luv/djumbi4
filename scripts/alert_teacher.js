@@ -22,8 +22,8 @@ async function alert_teacher(teacher_id, url) {
         
         if (json.lesson_name.length != 0){
             for (let i = 0; i < json.lesson_name.length; i++) {
-                alert(json.group_name[i] + '\n' +
-                json.pupil_name[i] + '\n' +
+                alert('Загружена домашняя работа\nГруппа: ' + json.group_name[i] + '\n' + 'Ученик: ' +
+                json.pupil_name[i] + '\n' + 'Название урока: ' +
                 json.lesson_name[i]);
             }
     }

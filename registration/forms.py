@@ -106,7 +106,7 @@ class RegisterUserForm(forms.ModelForm):
     def clean_password(self):
         password = self.cleaned_data['password']
         if not re.findall('[()[\]|\\`~!@#$%^&*_\-+=;:\'",<>./?]', password):
-            raise ValidationError('Password must contains at list one symbol')
+            raise ValidationError('Password must contains at least one symbol')
 
         if not re.findall('[a-z]', password):
             raise ValidationError("The password must contain at least 1 lowercase letter, a-z.")
