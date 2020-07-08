@@ -102,3 +102,19 @@ class RegisterUserForm(forms.ModelForm):
             raise ValidationError('Only eng letters and numbers')
 
         return username
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        if not re.findall('[()[\]|\\`~!@#$%^&*_\-+=;:\'",<>./?]', password):
+            raise ValidationError('Password must contains at list one symbol')
+
+        if not re.findall('[a-z]', password):
+            raise ValidationError("The password must contain at least 1 lowercase letter, a-z.")
+
+        if not re.findall('[A-Z]', password):
+            raise ValidationError("The password must contain at least 1 uppercase letter, A-Z.")
+
+        if not re.findall('\d', password):
+            raise ValidationError("The password must contain at least 1 digit, 0-9.")
+
+        return password
