@@ -1,8 +1,12 @@
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-async function alert_teacher(teacher_id) {
-    content = {'teacher_id': teacher_id};
-
+async function alert_teacher(teacher_id, url) {
+    let content = {'teacher_id': teacher_id};
+    let csrf_token = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    //console.log(url);
     let fetched_response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -16,20 +20,15 @@ async function alert_teacher(teacher_id) {
     if (fetched_response.ok) { // if 200
         let json = await fetched_response.json();
         
-        for (let i = 0; i < json.lesson_name.length; i++) {
-            alert(json.group_name[i] + '\n' +
-            json.pupil_name[i] + '\n' +
-            json.lesson_name[i]);
-        }
+        if (json.lesson_name.length != 0){
+            for (let i = 0; i < json.lesson_name.length; i++) {
+                alert(json.group_name[i] + '\n' +
+                json.pupil_name[i] + '\n' +
+                json.lesson_name[i]);
+            }
+    }
         
     } else {
         alert("Ошибка HTTP: " + fetched_response.status);
     }
-}
-
-async function start_alert_teacher(teacher_id) {
-    if (true) {
-        setTimeout(alert_teacher(teacher_id), 1000);        
-    }
-    setTimeout(start_alert_teacher, 1000);
 }

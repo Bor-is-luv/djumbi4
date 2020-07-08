@@ -204,7 +204,7 @@ def detail_lesson_view(request, lesson_id):
             # delete the solutions in the db
             solutions.delete()
             solution = Solution.objects.create(
-                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'])
+                pupil=pupil, lesson=lesson, done=True, homework_solution=form.cleaned_data['homework_solution'], seen_by_teacher=False)
         return redirect('cabinet_page')
 
     elif ctx['user_type'] == 'pupil':
@@ -528,7 +528,7 @@ def view_solutions_by_ajax(request):
     request_data = json.loads(request.body)
     teacher_id = request_data['teacher_id']
 
-    teacher = Teachers.objects.get(id=teacher_id)
+    teacher = Teacher.objects.get(id=teacher_id)
     groups = teacher.group_set.all()
     lessons = []
     solutions = []
@@ -539,8 +539,7 @@ def view_solutions_by_ajax(request):
 
     for lesson in lessons:
         for solution in lesson.solution_set.all():
-            setattr(solution, 'seen_by_teacher', True)
-            solution.save()
+            
             solutions.append(solution)
 
     result_pupils = []
@@ -548,11 +547,15 @@ def view_solutions_by_ajax(request):
     result_lessons = []
     for solution in solutions:
         if not solution.seen_by_teacher:
-            result_pupils.append(solution.pupil.user.first_name + solution.pupil.user.last_name)
+            result_pupils.append(solution.pupil.user.first_name + ' ' + solution.pupil.user.last_name)
             lesson = solution.lesson
             result_lessons.append(lesson.name)
             result_groups.append(lesson.group.name)
 
+            setattr(solution, 'seen_by_teacher', True)
+            solution.save()
+
+    response_data = {}
     response_data['lesson_name'] = result_lessons
     response_data['group_name'] = result_groups
     response_data['pupil_name'] = result_pupils
