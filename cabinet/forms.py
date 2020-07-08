@@ -124,7 +124,7 @@ class CreateTeacher(forms.ModelForm):
 class CreateLesson(forms.ModelForm):
     class Meta:
         model = Lesson
-        fields = ['group', 'materials', 'number', 'name']
+        fields = ['group', 'materials', 'number', 'name', 'homework_task']
 
     def __init__(self, *args, **kwargs):
         qs_groups = Group.objects.all()
