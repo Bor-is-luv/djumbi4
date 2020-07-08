@@ -539,6 +539,8 @@ def view_solutions_by_ajax(request):
 
     for lesson in lessons:
         for solution in lesson.solution_set.all():
+            setattr(solution, 'seen_by_teacher', True)
+            solution.save()
             solutions.append(solution)
 
     result_pupils = []
