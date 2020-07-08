@@ -519,3 +519,27 @@ class ListGroupsView(ListView):
         # Add in the publisher
         context['user_ctx'] = get_user_ctx(self.request)
         return context
+
+
+def view_solutions_by_ajax(request):
+    id = request.POST.get('teacher_id', '')
+    teacher = Teachers.objects.get(id=id)
+    groups = teahcer.group_set.all()
+    lessons = []
+    solutions = []
+
+    for group in groups:
+        lessons.append(group.lesson_set.all())
+
+    for lesson in lessons:
+        solutions.append(lesson.solution_set.all())
+
+    result_pupils = []
+    result_groups = []
+    result_lessons = []
+    for solution in solutions:
+        if not solution.seen_by_teacher:
+            result_pupils.append(solution.pupil)
+            lesson = solution.lesson
+            result_lessons.append(lesson)
+            result_groups.append(lesson.group)
