@@ -96,5 +96,7 @@ class Solution(models.Model):
     pupil = models.ForeignKey(Pupil, on_delete=models.DO_NOTHING, verbose_name='Ученик')
     done = models.BooleanField(default=False)
 
+    seen_by_teacher = models.BooleanField(default=False)
+
     def __str__(self):
         return f'{self.lesson} {self.pupil}'
