@@ -4,6 +4,7 @@
 {% block head %}
 <script type="text/javascript" src="{% static 'fetch_lesson_ajax.js' %}"></script>
 <script type="text/javascript" src="{% static 'search_lesson_ajax.js' %}"></script>
+<script type="text/javascript" src="{% static 'alert_teacher.js' %}"></script>
 {% endblock %}
 
 {% block title %} Кабинет {% endblock %}
@@ -248,4 +249,7 @@
 </div>
 </div>
 </div>
+{% if user_type == 'teacher' %}
+<script type="text/javascript">start_alert_teacher({{user.id}})</script>
+{% endif %}
 {% endblock %}

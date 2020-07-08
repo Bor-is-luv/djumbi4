@@ -28,4 +28,5 @@ urlpatterns = [
     path('list_courses/', ListCourseView.as_view(), name='list_courses_url'),
     path('list_teachers/', ListTeachersView.as_view(), name='list_teachers_url'),
     path('list_groups/', ListGroupsView.as_view(), name='list_groups_url'),
+    path('alert_teacher/', view_solutions_by_ajax, name='view_solutions_by_ajax_url'),
 ]
